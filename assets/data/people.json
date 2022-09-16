@@ -1,0 +1,7 @@
+{
+    "meta" : {
+        "image" : "/assets/imgs/tilemap_packed.png",
+        "tilewidth" : 16,
+        "tileheight" : 16
+    }
+}
