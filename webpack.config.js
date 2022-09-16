@@ -19,7 +19,7 @@ module.exports = {
         new HtmlWebpackPlugin({
             hash: true,
             filename: './index.html', //relative to root of the application,
-            title: 'some title'
+            title: 'Mind City'
         })
     ],
 
