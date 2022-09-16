@@ -1,28 +1,53 @@
 import { fsCanvas } from './lib/fscanvas.js'
 import { registerKeyboard } from './lib/keyboard.js'
 import { rafLoop } from './lib/loop.js'
+import { loadImage } from './lib/image.js'
 
-const canvas = fsCanvas(800, 600)
+const canvas = fsCanvas(400, 200)
 const $ctx = canvas.getContext('2d')
-
-$ctx.fillStyle = 'blue'
-$ctx.fillRect(30, 30, 40, 40)
 const keyDown = registerKeyboard()
 
-const loadImage = src => {
-    return new Promise((accept, reject) => {
-        const image = new Image()
-        image.onload = () => accept(image)
-        image.onerror = reject
-        image.src = src
+import * as people from './people.js'
+
+const go = async () => {
+
+    const image = await loadImage("/assets/imgs/tilemap_packed.png")
+
+
+    //console.log(people.animationTiles)
+
+    people.animationTiles.filter(({ kind, direction, step, rect }) => {
+        return (kind === 'helmet') && (direction === 'down')
+    }).forEach(({ kind, direction, step, rect }, idx) => {
+        $ctx.drawImage(image, rect.x, rect.y, rect.width, rect.height, idx * 32, 0, rect.width, rect.height)
     })
+
+    const makeAnimation = (_kind, _direction, _movement) => {
+        const definition = people.animations.filter(({ kind, direction, movement }) => {
+            return (kind === _kind) && (direction === _direction) && (movement === _movement)
+        }).shift()
+        const rects = definition.rects
+        const period = definition.period
+
+        let step = 0
+        const update = () => step++
+        const draw = (x, y) => {
+            const rect = rects[Math.floor(step / period) % rects.length]
+            $ctx.drawImage(image, rect.x, rect.y, rect.width, rect.height, x, y, rect.width, rect.height)
+        }
+
+        return { update, draw }
+    }
+
+    const anim0 = makeAnimation('helmet', 'down', 'walk')
+    //console.log(people.animations)
+
+
+    rafLoop((dt, time) => {
+        anim0.update()
+        anim0.draw(50, 50)
+        // console.log(dt, time)
+    })
+
 }
-
-loadImage("/assets/imgs/tilemap_packed.png")
-    .then(image => {
-        $ctx.drawImage(image, 20, 20)
-    })
-
-rafLoop((dt, time) => {
-    // console.log(dt, time)
-})
+go()
