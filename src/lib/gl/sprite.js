@@ -1,9 +1,10 @@
 import { CreateShaderProgram, CreateBuffer } from './utils.js'
 
+
+
 export function TinySprite(canvas) {
     var gl = canvas.getContext('webgl'),
-        // float + (vec2 * 4) + (char * 4)
-        VERTEX_SIZE = 4 + ((4 * 2) * 4) + (4),
+        VERTEX_SIZE = 4 + ((4 * 2) * 4) + (4),// float + (vec2 * 4) + (char * 4)
         MAX_BATCH = 10922, // floor((2 ^ 16) / 6)
         VERTEX_DATA_SIZE = VERTEX_SIZE * MAX_BATCH * 4,
         VERTICES_PER_QUAD = 6,
