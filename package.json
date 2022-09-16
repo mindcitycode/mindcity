@@ -1,7 +1,7 @@
 {
-  "name": "js13k2012",
+  "name": "mindcity",
   "version": "1.0.0",
-  "description": "",
+  "description": "a game of mind in a city",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,7 +10,7 @@
     "build": "npx webpack --mode=production"
   },
   "author": "",
-  "license": "MIT",
+  "license": "agpl-3.0",
   "dependencies": {
     "fast-random": "^2.0.4",
     "stats.js": "^0.17.0",
