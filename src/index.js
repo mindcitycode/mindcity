@@ -22,8 +22,7 @@ loadImage("/assets/imgs/tilemap_packed.png")
     .then(image => {
         $ctx.drawImage(image, 20, 20)
     })
-/*
+
 rafLoop((dt, time) => {
     // console.log(dt, time)
 })
-*/

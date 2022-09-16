@@ -1,10 +1,6 @@
-export function fsCanvas(width,height) {
-
-    const vh = 100*width/height
-    // dom
+export const fsCanvas = (width, height) => {
+    const vh = 100 * width / height
     const $style = document.createElement('style')
-
-    // the  "width : min(100vw,200vh);" works because we know the canvas w/h ratio
     $style.textContent = `
 body { 
     background-color : black;
