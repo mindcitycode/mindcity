@@ -75,7 +75,13 @@ const go3 = async (_canvas) => {
         }
         canvas.flush()
     }
-    draw()
+  
+    rafLoop((dt, time) => {
+        sprites[0].positionX+=1
+        console.log(sprites[0])
+        draw()
+        //console.log(dt, time)
+    })
 
 
 
@@ -85,9 +91,9 @@ go3(canvas)
 //import { gocats } from './cats.js'
 //gocats(canvas)
 
-rafLoop((dt, time) => {
+//rafLoop((dt, time) => {
     //console.log(dt, time)
-})
+//})
 
 
 
