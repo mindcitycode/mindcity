@@ -13,6 +13,51 @@ const keyDown = registerKeyboard()
 import { TinySprite } from "./lib/gl/sprite.js";
 import { CreateTexture } from "./lib/gl/utils.js"
 
+import { createWorld,addComponent, addEntity, defineComponent, defineQuery, pipe, Types } from 'bitecs'
+
+const Position = defineComponent({
+    x: Types.f32,
+    y: Types.f32,
+})
+const Orientation = defineComponent({
+    a: Types.f32
+})
+const Sprite = defineComponent({
+    textureNum: Types.i8,
+    x: Types.i32,
+    y: Types.i32,
+    width: Types.i32,
+    height: Types.i32,
+})
+
+const displayQuery = defineQuery([Position, Orientation, Sprite])
+const displaySystem = world => {
+    const ents = displayQuery(world)
+    for (let i = 0; i < ents.length; i++) {
+        const eid = ents[i]
+        //  canvas.img ....
+    }
+}
+
+const pipeline = pipe(displaySystem)
+
+const world = createWorld()
+const eid = addEntity(world)
+addComponent(world, Position, eid)
+addComponent(world, Orientation, eid)
+addComponent(world, Sprite, eid)
+Position.x[eid] = 10
+Position.y[eid] = 10
+Orientation.a[eid] = 0
+Sprite.textureNum[eid] = 0
+Sprite.x[eid] = 0
+Sprite.y[eid] = 0
+Sprite.width[eid] = 32
+Sprite.height[eid] = 32
+
+pipeline(world)
+
+
 const go3 = async (_canvas) => {
     var canvas = TinySprite(_canvas)
     const gl = canvas.g
@@ -75,9 +120,9 @@ const go3 = async (_canvas) => {
         }
         canvas.flush()
     }
-  
+
     rafLoop((dt, time) => {
-        sprites[0].positionX+=1
+        sprites[0].positionX += 1
         console.log(sprites[0])
         draw()
         //console.log(dt, time)
@@ -92,7 +137,7 @@ go3(canvas)
 //gocats(canvas)
 
 //rafLoop((dt, time) => {
-    //console.log(dt, time)
+//console.log(dt, time)
 //})
 
 
