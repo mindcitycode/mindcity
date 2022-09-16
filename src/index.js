@@ -1,6 +1,6 @@
-import { fsCanvas } from './fscanvas.js'
-import { registerKeyboard } from './keyboard.js'
-import { rafLoop } from './loop.js'
+import { fsCanvas } from './lib/fscanvas.js'
+import { registerKeyboard } from './lib/keyboard.js'
+import { rafLoop } from './lib/loop.js'
 
 const canvas = fsCanvas(800, 600)
 const $ctx = canvas.getContext('2d')
