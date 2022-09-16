@@ -2,12 +2,28 @@ import { fsCanvas } from './lib/fscanvas.js'
 import { registerKeyboard } from './lib/keyboard.js'
 import { rafLoop } from './lib/loop.js'
 import { loadImage } from './lib/image.js'
+import * as people from './people.js'
 
 const canvas = fsCanvas(400, 200)
-const $ctx = canvas.getContext('2d')
+canvas.id = 'canvas'
+//const $ctx = canvas.getContext('2d')
 const keyDown = registerKeyboard()
 
-import * as people from './people.js'
+import { gocats } from './cats.js'
+gocats(canvas)
+
+rafLoop((dt, time) => {
+    //console.log(dt, time)
+})
+
+
+
+
+
+
+
+
+
 
 const go = async () => {
 
@@ -15,6 +31,7 @@ const go = async () => {
 
 
     //console.log(people.animationTiles)
+
 
     people.animationTiles.filter(({ kind, direction, step, rect }) => {
         return (kind === 'helmet') && (direction === 'down')
@@ -50,4 +67,4 @@ const go = async () => {
     })
 
 }
-go()
+//go()
