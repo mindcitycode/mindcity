@@ -13,7 +13,6 @@
   "license": "MIT",
   "dependencies": {
     "fast-random": "^2.0.4",
-    "kontra": "^8.0.0",
     "stats.js": "^0.17.0",
     "terser-webpack-plugin": "^5.3.5"
   },
