@@ -7,24 +7,32 @@ import { Position, Orientation, Tile, Animation, Move, pipeline } from './ecs.js
 import { Renderer } from './lib/gl/renderer.js'
 import * as people from './people.js'
 
-const canvas = fsCanvas(400, 200)
+const canvas = fsCanvas(600, 600)
+//const canvas = fsCanvas(800, 800)
 canvas.id = 'canvas'
 const keyDown = registerKeyboard()
 
-import { extractTiles, fixImagesPath } from './lib/tilemap.js'
+import { extractTiles, fixImagesPath, tilemapRenderer } from './lib/tilemap.js'
 const imagesUrls = [
     "/assets/imgs/tilemap_packed.png"
 ]
+/*
 const go667 = async () => {
-    const map0 = await fetch('/assets/data/map0.json').then(x => x.json())
-    fixImagesPath(map0, imagesUrls)
-    const tiles = extractTiles(map0)
+    
+    
+
     console.log(map0.tilesets)
-    console.log({ tiles })
+    console.log({ tiles })  
 }
 go667()
+*/
 const go666 = async () => {
     const renderer = await Renderer(canvas, imagesUrls)
+
+    const map0 = await fetch('/assets/data/map0.json').then(x => x.json())
+    fixImagesPath(map0, imagesUrls)
+//    const tiles = extractTiles(map0)
+
     const tile0 = renderer.makeTile(imagesUrls[0], 0, 0, 32, 32)
     const tile1 = renderer.makeTile(imagesUrls[0], 64, 64, 32, 32)
 
@@ -50,19 +58,21 @@ const go666 = async () => {
         addComponent(world, Animation, eid)
         addComponent(world, Move, eid)
         Position.x[eid] = 10 * x
-        Position.y[eid] = 10
+        Position.y[eid] = 10 * (x+3 )
         Orientation.a[eid] = 0
         Animation.index[eid] = animation0
+        Animation.tick[eid] = 2*x
     }
 
     rafLoop((dt, time) => {
         renderer.cls()
+        tilemapRenderer(renderer,map0)
         pipeline(world)
         renderer.flush()
     })
 }
 
-//go666()
+go666()
 
 
 

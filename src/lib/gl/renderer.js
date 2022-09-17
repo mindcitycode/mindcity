@@ -2,7 +2,7 @@ import { TinySprite } from "./sprite.js"
 import { CreateTexture } from "./utils.js"
 import { loadImage } from '../image.js'
 
-function Tile(texture, frameX, frameY, frameW, frameH) {
+function Tile(texture, frameX, frameY, frameW, frameH, center = true) {
     this.width = frameW;
     this.height = frameH;
     this.texture = texture;
@@ -10,7 +10,14 @@ function Tile(texture, frameX, frameY, frameW, frameH) {
     this.v0 = frameY / texture.height;
     this.u1 = this.u0 + (frameW / texture.width);
     this.v1 = this.v0 + (frameH / texture.height);
-    this.halfWidth = frameW / 2;
+    if (center) {
+        this.halfWidth = frameW / 2;
+        this.halfHeight = frameH / 2;
+    } else {
+        this.halfWidth = 0
+        this.halfHeight = 0
+
+    }
 }
 function Animation(tileIndexes, period) {
     this.tileIndexes = tileIndexes
@@ -47,7 +54,7 @@ export const Renderer = async (canvas, imagesUrls) => {
             // Position X 
             -tile.halfWidth,
             // Position Y
-            0,
+            -tile.halfHeight,
             // Width
             tile.width,
             // Height

@@ -57,3 +57,32 @@ export const fixImagesPath = (tilemap, imagesUrls) => {
         tileset.image = url
     })
 }
+
+export const tilemapRenderer = (renderer, tilemap) => {
+
+    const tiles = extractTiles(tilemap)
+
+    const tileIdxByGid = []
+    tiles.forEach((tile, gid) => {
+        tileIdxByGid[gid] = renderer.makeTile(tile.image, ...tile.rectangle)
+    })
+
+    const offx = 16 * 0
+    const offy = 16 * 16
+    tilemap.layers.map(layer => {
+        layer.chunks.forEach((chunk, chunkIdx) => {
+            chunk.data.forEach((code, codeIdx) => {
+                if (code === 0) return
+                const gid = codeToGid(code)
+                const [tilewidth, tileheight] = tiles[gid].rectangle.slice(2)
+                const i = /*layer.startx +*/ chunk.x + codeIdx % chunk.width
+                const j = /*layer.starty +*/ chunk.y + Math.floor(codeIdx / chunk.width)
+                const x = layer.x + i * tilemap.tilewidth
+                const y = layer.y + j * tilemap.tileheight
+                renderer.putTile(tileIdxByGid[gid], offx + x + tilewidth / 2, offy + y + tileheight / 2, 0)
+            })
+        })
+    })
+
+
+}
