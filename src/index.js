@@ -7,7 +7,7 @@ import { Position, Orientation, Tile, Animation, Move, pipeline } from './ecs.js
 import { Renderer } from './lib/gl/renderer.js'
 import * as people from './people.js'
 
-const canvas = fsCanvas(300, 300)
+const canvas = fsCanvas(400, 400)
 //const canvas = fsCanvas(600,650)
 canvas.id = 'canvas'
 const keyDown = registerKeyboard()
