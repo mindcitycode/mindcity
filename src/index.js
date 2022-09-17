@@ -48,8 +48,8 @@ const go666 = async () => {
         addComponent(world, Position, eid)
         addComponent(world, Orientation, eid)
         addComponent(world, Tile, eid)
-        Position.x[eid] = 10 * x
-        Position.y[eid] = 10
+        Position.x[eid] = 20 + 10 * x
+        Position.y[eid] = 20 + 10 * x
         Orientation.a[eid] = 0
         Tile.index[eid] = 1
     }
@@ -66,9 +66,14 @@ const go666 = async () => {
         Animation.tick[eid] = 2 * x
     }
 
+
     rafLoop((dt, time) => {
         renderer.cls()
-        renderTilemap()
+        renderTilemap({
+            x:16*10*Math.cos(time),
+            y:16*10*Math.sin(time)
+            
+        })
         pipeline(world)
         renderer.flush()
     })

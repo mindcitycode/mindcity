@@ -83,7 +83,7 @@ export const tilemapRenderer = (renderer, tilemap) => {
     const offx = -1 * bounds.x
     const offy = -1 * bounds.y
 
-    return function render() {
+    return function render(origin) {
         tilemap.layers.map(layer => {
             layer.chunks.forEach((chunk, chunkIdx) => {
                 chunk.data.forEach((code, codeIdx) => {
@@ -92,8 +92,8 @@ export const tilemapRenderer = (renderer, tilemap) => {
                     const [tilewidth, tileheight] = tiles[gid].rectangle.slice(2)
                     const i = /*layer.startx +*/ chunk.x + codeIdx % chunk.width
                     const j = /*layer.starty +*/ chunk.y + Math.floor(codeIdx / chunk.width)
-                    const x = layer.x + i * tilemap.tilewidth
-                    const y = layer.y + j * tilemap.tileheight
+                    const x = -1 * origin.x + layer.x + i * tilemap.tilewidth
+                    const y = -1 * origin.y + layer.y + j * tilemap.tileheight
                     renderer.putTile(tileIdxByGid[gid], offx + x + tilewidth / 2, offy + y + tileheight / 2, 0)
                 })
             })
