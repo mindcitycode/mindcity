@@ -32,7 +32,6 @@ export const Commands = defineComponent({
 })
 
 const movementControlQuery = defineQuery([Velocity, Commands])
-
 export const movementControlSystem = world => {
     const ents = movementControlQuery(world)
     for (let i = 0; i < ents.length; i++) {
@@ -40,10 +39,10 @@ export const movementControlSystem = world => {
         const dx = Commands.goLeft[eid] ? -1 : Commands.goRight[eid] ? 1 : 0
         const dy = Commands.goUp[eid] ? -1 : Commands.goDown[eid] ? 1 : 0
         if (hasComponent(world, Velocity, eid)) {
-            Velocity.x[eid] = 0.25 * dx
-            Velocity.y[eid] = 0.25 * dy
+            Velocity.x[eid] = 0.5 * dx
+            Velocity.y[eid] = 0.5 * dy
         }
-        
+
     }
 
     return world
@@ -65,7 +64,7 @@ export const animationSystem = world => {
     const ents = animationQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-        renderer.putAnimation(Animation.index[eid], Animation.tick[eid], Position.x[eid], Position.y[eid], Orientation.a[eid])
+        renderer.putAnimation(Animation.index[eid], Animation.tick[eid], Math.round(Position.x[eid]), Math.round(Position.y[eid]), Orientation.a[eid])
         Animation.tick[eid] += 1
     }
     return world
