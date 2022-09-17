@@ -26,7 +26,7 @@ export const moveSystem = world => {
     const ents = moveQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-        Position.x[eid] += 1
+        Position.x[eid] += 0.25
     }
     return world
 }

@@ -35,14 +35,16 @@ const go666 = async () => {
 
     //    const tiles = extractTiles(map0)
 
-    const tile0 = renderer.makeTile(imagesUrls[0], 0, 0, 32, 32)
-    const tile1 = renderer.makeTile(imagesUrls[0], 64, 64, 32, 32)
+    const tile0 = renderer.makeTile(imagesUrls[0], 18 * 23, 0, 16, 16)
+    const tile1 = renderer.makeTile(imagesUrls[0], 18 * 23, 16, 16, 16)
+    const tile2 = renderer.makeTile(imagesUrls[0], 18 * 23, 16 * 2, 16, 16)
 
-    const animation0 = renderer.makeAnimation([tile0, tile1], 10)
+
+    const animation0 = renderer.makeAnimation([tile0, tile1, tile0, tile2], 12)
 
     const world = createWorld()
     world.renderer = renderer
-
+    if (false)
     for (let x = 0; x < 10; x++) {
         const eid = addEntity(world)
         addComponent(world, Position, eid)
@@ -70,8 +72,8 @@ const go666 = async () => {
     rafLoop((dt, time) => {
         renderer.cls()
         renderTilemap({
-            x:0,
-            y:0            
+            x: 0,
+            y: 0
         })
         pipeline(world)
         renderer.flush()
