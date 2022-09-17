@@ -11,10 +11,19 @@ const canvas = fsCanvas(400, 200)
 canvas.id = 'canvas'
 const keyDown = registerKeyboard()
 
+import { extractTiles, fixImagesPath } from './lib/tilemap.js'
+const imagesUrls = [
+    "/assets/imgs/tilemap_packed.png"
+]
+const go667 = async () => {
+    const map0 = await fetch('/assets/data/map0.json').then(x => x.json())
+    fixImagesPath(map0, imagesUrls)
+    const tiles = extractTiles(map0)
+    console.log(map0.tilesets)
+    console.log({ tiles })
+}
+go667()
 const go666 = async () => {
-    const imagesUrls = [
-        "/assets/imgs/tilemap_packed.png"
-    ]
     const renderer = await Renderer(canvas, imagesUrls)
     const tile0 = renderer.makeTile(imagesUrls[0], 0, 0, 32, 32)
     const tile1 = renderer.makeTile(imagesUrls[0], 64, 64, 32, 32)
@@ -45,7 +54,7 @@ const go666 = async () => {
         Orientation.a[eid] = 0
         Animation.index[eid] = animation0
     }
-    
+
     rafLoop((dt, time) => {
         renderer.cls()
         pipeline(world)
@@ -53,7 +62,7 @@ const go666 = async () => {
     })
 }
 
-go666()
+//go666()
 
 
 

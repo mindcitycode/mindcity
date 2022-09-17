@@ -5,7 +5,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 
 module.exports = {
-   // devtool: "source-map",
+    devtool: "source-map",
 
     //   entry: "./src/scripts/app.js", //relative to root of the application
     //  output: {
@@ -14,6 +14,7 @@ module.exports = {
         new CopyPlugin({
             patterns: [
                 { from: "assets", to: "assets" },
+                { from: "favicon.ico", to: "favicon.ico" },
             ],
         }),
         new HtmlWebpackPlugin({
