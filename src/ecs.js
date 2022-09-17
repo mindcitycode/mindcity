@@ -1,9 +1,13 @@
-import { defineComponent, defineQuery, pipe, Types } from 'bitecs'
+import { defineComponent, defineQuery, hasComponent, pipe, Types } from 'bitecs'
 
 export const Follower = defineComponent({
     cultIndex: Types.i8
 })
 export const Position = defineComponent({
+    x: Types.f32,
+    y: Types.f32,
+})
+export const Velocity = defineComponent({
     x: Types.f32,
     y: Types.f32,
 })
@@ -20,13 +24,38 @@ export const Animation = defineComponent({
 export const Move = defineComponent({
 
 })
+export const Commands = defineComponent({
+    goLeft: Types.i8,
+    goRight: Types.i8,
+    goUp: Types.i8,
+    goDown: Types.i8
+})
 
-const moveQuery = defineQuery([Move])
+const movementControlQuery = defineQuery([Velocity, Commands])
+
+export const movementControlSystem = world => {
+    const ents = movementControlQuery(world)
+    for (let i = 0; i < ents.length; i++) {
+        const eid = ents[i]
+        const dx = Commands.goLeft[eid] ? -1 : Commands.goRight[eid] ? 1 : 0
+        const dy = Commands.goUp[eid] ? -1 : Commands.goDown[eid] ? 1 : 0
+        if (hasComponent(world, Velocity, eid)) {
+            Velocity.x[eid] = 0.25 * dx
+            Velocity.y[eid] = 0.25 * dy
+        }
+        
+    }
+
+    return world
+}
+
+const moveQuery = defineQuery([Velocity, Position])
 export const moveSystem = world => {
     const ents = moveQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-        Position.x[eid] += 0.25
+        Position.x[eid] += Velocity.x[eid]
+        Position.y[eid] += Velocity.y[eid]
     }
     return world
 }
@@ -51,4 +80,4 @@ const displaySystem = world => {
     }
     return world
 }
-export const pipeline = pipe(moveSystem, displaySystem, animationSystem)
+export const pipeline = pipe(movementControlSystem, moveSystem, displaySystem, animationSystem)
