@@ -31,7 +31,9 @@ const go666 = async () => {
 
     const map0 = await fetch('/assets/data/map0.json').then(x => x.json())
     fixImagesPath(map0, imagesUrls)
-//    const tiles = extractTiles(map0)
+    const renderTilemap = tilemapRenderer(renderer, map0)
+
+    //    const tiles = extractTiles(map0)
 
     const tile0 = renderer.makeTile(imagesUrls[0], 0, 0, 32, 32)
     const tile1 = renderer.makeTile(imagesUrls[0], 64, 64, 32, 32)
@@ -58,15 +60,15 @@ const go666 = async () => {
         addComponent(world, Animation, eid)
         addComponent(world, Move, eid)
         Position.x[eid] = 10 * x
-        Position.y[eid] = 10 * (x+3 )
+        Position.y[eid] = 10 * (x + 3)
         Orientation.a[eid] = 0
         Animation.index[eid] = animation0
-        Animation.tick[eid] = 2*x
+        Animation.tick[eid] = 2 * x
     }
 
     rafLoop((dt, time) => {
         renderer.cls()
-        tilemapRenderer(renderer,map0)
+        renderTilemap()
         pipeline(world)
         renderer.flush()
     })

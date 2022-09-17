@@ -58,6 +58,18 @@ export const fixImagesPath = (tilemap, imagesUrls) => {
     })
 }
 
+export const getBounds = tilemap => {
+    let x = Number.POSITIVE_INFINITY
+    let y = Number.POSITIVE_INFINITY
+    tilemap.layers.forEach(layer => {
+        x = Math.min(x, layer.startx * tilemap.tilewidth)
+        y = Math.min(y, layer.starty * tilemap.tileheight)
+    })
+    const width = tilemap.tilewidth * tilemap.width
+    const height = tilemap.tileheight * tilemap.height
+    return { x, y, width, height }
+
+}
 export const tilemapRenderer = (renderer, tilemap) => {
 
     const tiles = extractTiles(tilemap)
@@ -66,23 +78,26 @@ export const tilemapRenderer = (renderer, tilemap) => {
     tiles.forEach((tile, gid) => {
         tileIdxByGid[gid] = renderer.makeTile(tile.image, ...tile.rectangle)
     })
+    const bounds = getBounds(tilemap)
 
-    const offx = 16 * 0
-    const offy = 16 * 16
-    tilemap.layers.map(layer => {
-        layer.chunks.forEach((chunk, chunkIdx) => {
-            chunk.data.forEach((code, codeIdx) => {
-                if (code === 0) return
-                const gid = codeToGid(code)
-                const [tilewidth, tileheight] = tiles[gid].rectangle.slice(2)
-                const i = /*layer.startx +*/ chunk.x + codeIdx % chunk.width
-                const j = /*layer.starty +*/ chunk.y + Math.floor(codeIdx / chunk.width)
-                const x = layer.x + i * tilemap.tilewidth
-                const y = layer.y + j * tilemap.tileheight
-                renderer.putTile(tileIdxByGid[gid], offx + x + tilewidth / 2, offy + y + tileheight / 2, 0)
+    const offx = -1 * bounds.x
+    const offy = -1 * bounds.y
+
+    return function render() {
+        tilemap.layers.map(layer => {
+            layer.chunks.forEach((chunk, chunkIdx) => {
+                chunk.data.forEach((code, codeIdx) => {
+                    if (code === 0) return
+                    const gid = codeToGid(code)
+                    const [tilewidth, tileheight] = tiles[gid].rectangle.slice(2)
+                    const i = /*layer.startx +*/ chunk.x + codeIdx % chunk.width
+                    const j = /*layer.starty +*/ chunk.y + Math.floor(codeIdx / chunk.width)
+                    const x = layer.x + i * tilemap.tilewidth
+                    const y = layer.y + j * tilemap.tileheight
+                    renderer.putTile(tileIdxByGid[gid], offx + x + tilewidth / 2, offy + y + tileheight / 2, 0)
+                })
             })
         })
-    })
-
+    }
 
 }
