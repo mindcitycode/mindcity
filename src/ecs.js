@@ -17,30 +17,38 @@ export const Animation = defineComponent({
     index: Types.i32,
     tick: Types.i32
 })
-const animationQuery = defineQuery([Animation])
-const animationSystem = world => {
+export const Move = defineComponent({
+
+})
+
+const moveQuery = defineQuery([Move])
+export const moveSystem = world => {
+    const ents = moveQuery(world)
+    for (let i = 0; i < ents.length; i++) {
+        const eid = ents[i]
+        Position.x[eid] += 1
+    }
+    return world
+}
+const animationQuery = defineQuery([Position, Orientation, Animation])
+export const animationSystem = world => {
     const { renderer } = world
-    renderer.cls();
-    const ents = displayQuery(world)
+    const ents = animationQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
         renderer.putAnimation(Animation.index[eid], Animation.tick[eid], Position.x[eid], Position.y[eid], Orientation.a[eid])
         Animation.tick[eid] += 1
     }
-    renderer.flush()
-
+    return world
 }
 const displayQuery = defineQuery([Position, Orientation, Tile])
 const displaySystem = world => {
     const { renderer } = world
-    renderer.cls();
     const ents = displayQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
         renderer.putTile(Tile.index[eid], Position.x[eid], Position.y[eid], Orientation.a[eid])
     }
-    renderer.flush()
+    return world
 }
-
-//export const pipeline = pipe(displaySystem)
-export const pipeline = pipe(animationSystem)
+export const pipeline = pipe(moveSystem, displaySystem, animationSystem)

@@ -3,7 +3,7 @@ import { registerKeyboard } from './lib/keyboard.js'
 import { rafLoop } from './lib/loop.js'
 import { loadImage } from './lib/image.js'
 import { createWorld, addComponent, addEntity } from 'bitecs'
-import { Position, Orientation, Tile, pipeline } from './ecs.js'
+import { Position, Orientation, Tile, Animation, Move, pipeline } from './ecs.js'
 import { Renderer } from './lib/gl/renderer.js'
 import * as people from './people.js'
 
@@ -19,26 +19,37 @@ const go666 = async () => {
     const tile0 = renderer.makeTile(imagesUrls[0], 0, 0, 32, 32)
     const tile1 = renderer.makeTile(imagesUrls[0], 64, 64, 32, 32)
 
-    const animation0 = renderer.makeAnimation([tile0,tile1],10)
+    const animation0 = renderer.makeAnimation([tile0, tile1], 10)
 
     const world = createWorld()
     world.renderer = renderer
 
-    const eid = addEntity(world)
-    addComponent(world, Position, eid)
-    addComponent(world, Orientation, eid)
-    addComponent(world, Tile, eid)
-    addComponent(world, Animation, eid)
- 
- 
-    Position.x[eid] = 10
-    Position.y[eid] = 10
-    Orientation.a[eid] = 0
-    Tile.index[eid] = 1
-
+    for (let x = 0; x < 10; x++) {
+        const eid = addEntity(world)
+        addComponent(world, Position, eid)
+        addComponent(world, Orientation, eid)
+        addComponent(world, Tile, eid)
+        Position.x[eid] = 10 * x
+        Position.y[eid] = 10
+        Orientation.a[eid] = 0
+        Tile.index[eid] = 1
+    }
+    for (let x = 0; x < 10; x++) {
+        const eid = addEntity(world)
+        addComponent(world, Position, eid)
+        addComponent(world, Orientation, eid)
+        addComponent(world, Animation, eid)
+        addComponent(world, Move, eid)
+        Position.x[eid] = 10 * x
+        Position.y[eid] = 10
+        Orientation.a[eid] = 0
+        Animation.index[eid] = animation0
+    }
+    
     rafLoop((dt, time) => {
+        renderer.cls()
         pipeline(world)
-        Position.x[eid] += 1
+        renderer.flush()
     })
 }
 
