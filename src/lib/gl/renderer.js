@@ -14,10 +14,9 @@ function Tile(texture, frameX, frameY, frameW, frameH) {
     this.halfWidth = frameW / 2;
 }
 
-export const SpriteRenderer = async (canvas, imagesUrls) => {
+export const Renderer = async (canvas, imagesUrls) => {
  
     var renderer = TinySprite(canvas)
-    //renderer.bkg(0.227, 0.227, 0.227);
     renderer.bkg(0,0,0)
 
     const images = await Promise.all(imagesUrls.map(loadImage))

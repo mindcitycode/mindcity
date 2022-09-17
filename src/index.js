@@ -13,64 +13,41 @@ canvas.id = 'canvas'
 const keyDown = registerKeyboard()
 
 import { createWorld, addComponent, addEntity } from 'bitecs'
-import { Position, Orientation, Sprite, pipeline } from './ecs.js'
+import { Position, Orientation, Tile, pipeline } from './ecs.js'
 
-import { SpriteRenderer } from './lib/gl/wrap.js'
+import { Renderer } from './lib/gl/renderer.js'
 
 const go666 = async () => {
     const imagesUrls = [
         "/assets/imgs/tilemap_packed.png"
     ]
-    const renderer = await SpriteRenderer(canvas, imagesUrls)
+    const renderer = await Renderer(canvas, imagesUrls)
     const tile0 = renderer.makeTile(imagesUrls[0], 0, 0, 32, 32)
     const tile1 = renderer.makeTile(imagesUrls[0], 64, 64, 32, 32)
-    console.log({tile0})
-    console.log({ renderer })
-    renderer.cls()
-    renderer.putTile(tile0,10,10,0)
-    renderer.putTile(tile1,10,60,0)
-    renderer.flush()
-}
-go666()
-const go12 = async () => {
-
-    const imagesUrls = [
-        "/assets/imgs/tilemap_packed.png"
-    ]
-
-    var renderer = TinySprite(canvas)
-    renderer.bkg(0.227, 0.227, 0.227);
-
-    const images = await Promise.all(imagesUrls.map(loadImage))
-    const textures = images.map(image => CreateTexture(renderer.g, image, image.width, image.height))
-
-
 
     const world = createWorld()
     world.renderer = renderer
-    world.textures = textures
 
     const eid = addEntity(world)
     addComponent(world, Position, eid)
     addComponent(world, Orientation, eid)
-    addComponent(world, Sprite, eid)
+    addComponent(world, Tile, eid)
     Position.x[eid] = 10
     Position.y[eid] = 10
     Orientation.a[eid] = 0
-
-    Sprite.textureNum[eid] = 0
-    Sprite.x[eid] = 0
-    Sprite.y[eid] = 0
-    Sprite.width[eid] = 32
-    Sprite.height[eid] = 32
+    Tile.index[eid] = 0
+    
 
     rafLoop((dt, time) => {
         pipeline(world)
+        Position.x[eid] += 1
+        
     })
 
-}
-//go12()
 
+}
+
+go666()
 
 
 
