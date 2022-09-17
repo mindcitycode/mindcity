@@ -1,0 +1,72 @@
+const go = async (_canvas) => {
+
+    // load texture
+    const image = await loadImage("/assets/imgs/tilemap_packed.png")
+    const kittenTexture = CreateTexture(gl, image, image.width, image.height);
+    
+    // create renderer
+    var renderer = TinySprite(_canvas)
+    const gl = renderer.g
+
+    function Sprite(x, y, texture, frameX, frameY, frameW, frameH) {
+        this.positionX = x;
+        this.positionY = y;
+        this.width = frameW;
+        this.height = frameH;
+        this.texture = texture;
+        this.rotation = 0;
+        this.u0 = frameX / texture.width;
+        this.v0 = frameY / texture.height;
+        this.u1 = this.u0 + (frameW / texture.width);
+        this.v1 = this.v0 + (frameH / texture.height);
+        this.halfWidth = frameW / 2;
+    }
+
+    renderer.bkg(0.227, 0.227, 0.227);
+
+    const sprites = [
+        new Sprite(0, 0, kittenTexture, 0, 0, 32, 32)
+    ]
+    const draw = () => {
+        renderer.cls();
+        for (let i = 0, l = sprites.length; i < l; i++) {
+            const sprite = sprites[i]
+            renderer.img(
+                // Texture
+                sprite.texture,
+                // Position X 
+                -sprite.halfWidth,
+                // Position Y
+                0,
+                // Width
+                sprite.width,
+                // Height
+                sprite.height,
+                // Rotation
+                sprite.rotation,
+                // Translation X
+                sprite.positionX,
+                // Translation Y
+                sprite.positionY,
+                // Scale X
+                1,
+                // Scale Y
+                1,
+                // UV0
+                sprite.u0,
+                sprite.v0,
+                // UV1
+                sprite.u1,
+                sprite.v1
+            );
+        }
+        renderer.flush()
+    }
+
+    rafLoop((dt, time) => {
+        sprites[0].positionX += 1
+        console.log(sprites[0])
+        draw()
+        //console.log(dt, time)
+    })
+}

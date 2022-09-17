@@ -3,13 +3,13 @@ export const fsCanvas = (width, height) => {
     const $style = document.createElement('style')
     $style.textContent = `
 body { 
-    background-color : black;
+    background-color : grey;
     margin:0;
     border:0;
     padding : 0;
 }
 canvas {
-    background-color : grey;
+    background-color : black;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     width : min(100vw,${vh}vh);

@@ -2,149 +2,74 @@ import { fsCanvas } from './lib/fscanvas.js'
 import { registerKeyboard } from './lib/keyboard.js'
 import { rafLoop } from './lib/loop.js'
 import { loadImage } from './lib/image.js'
-import * as people from './people.js'
-
-const canvas = fsCanvas(400, 200)
-canvas.id = 'canvas'
-//const $ctx = canvas.getContext('2d')
-const keyDown = registerKeyboard()
-
 
 import { TinySprite } from "./lib/gl/sprite.js";
 import { CreateTexture } from "./lib/gl/utils.js"
 
-import { createWorld,addComponent, addEntity, defineComponent, defineQuery, pipe, Types } from 'bitecs'
+import * as people from './people.js'
 
-const Position = defineComponent({
-    x: Types.f32,
-    y: Types.f32,
-})
-const Orientation = defineComponent({
-    a: Types.f32
-})
-const Sprite = defineComponent({
-    textureNum: Types.i8,
-    x: Types.i32,
-    y: Types.i32,
-    width: Types.i32,
-    height: Types.i32,
-})
+const canvas = fsCanvas(400, 200)
+canvas.id = 'canvas'
+const keyDown = registerKeyboard()
 
-const displayQuery = defineQuery([Position, Orientation, Sprite])
-const displaySystem = world => {
-    const ents = displayQuery(world)
-    for (let i = 0; i < ents.length; i++) {
-        const eid = ents[i]
-        //  canvas.img ....
-    }
-}
+import { createWorld, addComponent, addEntity } from 'bitecs'
+import { Position, Orientation, Sprite, pipeline } from './ecs.js'
 
-const pipeline = pipe(displaySystem)
+import { SpriteRenderer } from './lib/gl/wrap.js'
 
-const world = createWorld()
-const eid = addEntity(world)
-addComponent(world, Position, eid)
-addComponent(world, Orientation, eid)
-addComponent(world, Sprite, eid)
-Position.x[eid] = 10
-Position.y[eid] = 10
-Orientation.a[eid] = 0
-Sprite.textureNum[eid] = 0
-Sprite.x[eid] = 0
-Sprite.y[eid] = 0
-Sprite.width[eid] = 32
-Sprite.height[eid] = 32
-
-pipeline(world)
-
-
-const go3 = async (_canvas) => {
-    var canvas = TinySprite(_canvas)
-    const gl = canvas.g
-
-    function Sprite(x, y, texture, frameX, frameY, frameW, frameH) {
-        this.positionX = x;
-        this.positionY = y;
-        this.width = frameW;
-        this.height = frameH;
-        this.texture = texture;
-        this.speedX = 0;
-        this.speedY = 0;
-        this.rotation = 0;
-        this.u0 = frameX / texture.width;
-        this.v0 = frameY / texture.height;
-        this.u1 = this.u0 + (frameW / texture.width);
-        this.v1 = this.v0 + (frameH / texture.height);
-        this.halfWidth = frameW / 2;
-    }
-
-    canvas.bkg(0.227, 0.227, 0.227);
-
-    const image = await loadImage("/assets/imgs/tilemap_packed.png")
-    const kittenTexture = CreateTexture(gl, image, image.width, image.height);
-    const sprites = [
-        new Sprite(0, 0, kittenTexture, 0, 0, 32, 32)
+const go666 = async () => {
+    const imagesUrls = [
+        "/assets/imgs/tilemap_packed.png"
     ]
-    const draw = () => {
-        canvas.cls();
-        for (let i = 0, l = sprites.length; i < l; i++) {
-            const sprite = sprites[i]
-            canvas.img(
-                // Texture
-                sprite.texture,
-                // Position X 
-                -sprite.halfWidth,
-                // Position Y
-                0,
-                // Width
-                sprite.width,
-                // Height
-                sprite.height,
-                // Rotation
-                sprite.rotation,
-                // Translation X
-                sprite.positionX,
-                // Translation Y
-                sprite.positionY,
-                // Scale X
-                1,
-                // Scale Y
-                1,
-                // UV0
-                sprite.u0,
-                sprite.v0,
-                // UV1
-                sprite.u1,
-                sprite.v1
-            );
-        }
-        canvas.flush()
-    }
+    const renderer = await SpriteRenderer(canvas, imagesUrls)
+    const tile0 = renderer.makeTile(imagesUrls[0], 0, 0, 32, 32)
+    const tile1 = renderer.makeTile(imagesUrls[0], 64, 64, 32, 32)
+    console.log({tile0})
+    console.log({ renderer })
+    renderer.cls()
+    renderer.putTile(tile0,10,10,0)
+    renderer.putTile(tile1,10,60,0)
+    renderer.flush()
+}
+go666()
+const go12 = async () => {
+
+    const imagesUrls = [
+        "/assets/imgs/tilemap_packed.png"
+    ]
+
+    var renderer = TinySprite(canvas)
+    renderer.bkg(0.227, 0.227, 0.227);
+
+    const images = await Promise.all(imagesUrls.map(loadImage))
+    const textures = images.map(image => CreateTexture(renderer.g, image, image.width, image.height))
+
+
+
+    const world = createWorld()
+    world.renderer = renderer
+    world.textures = textures
+
+    const eid = addEntity(world)
+    addComponent(world, Position, eid)
+    addComponent(world, Orientation, eid)
+    addComponent(world, Sprite, eid)
+    Position.x[eid] = 10
+    Position.y[eid] = 10
+    Orientation.a[eid] = 0
+
+    Sprite.textureNum[eid] = 0
+    Sprite.x[eid] = 0
+    Sprite.y[eid] = 0
+    Sprite.width[eid] = 32
+    Sprite.height[eid] = 32
 
     rafLoop((dt, time) => {
-        sprites[0].positionX += 1
-        console.log(sprites[0])
-        draw()
-        //console.log(dt, time)
+        pipeline(world)
     })
 
-
-
 }
-go3(canvas)
-
-//import { gocats } from './cats.js'
-//gocats(canvas)
-
-//rafLoop((dt, time) => {
-//console.log(dt, time)
-//})
-
-
-
-
-
-
+//go12()
 
 
 

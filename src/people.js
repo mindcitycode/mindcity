@@ -10,7 +10,21 @@ const data = {
 */
 
 export const kinds = ['green', 'red', 'violet', 'helmet', 'blond', 'black']
+export const KIND_GREEN = 0
+export const KIND_RED = 1
+export const KIND_VIOLET = 2
+export const KIND_HELMET = 3
+export const KIND_BLOND = 4
+export const KIND_BLACK = 5
+export const KIND_COUNT = 6
+
 export const directions = ['left', 'down', 'up', 'right']
+export const DIRECTION_LEFT = 0
+export const DIRECTION_DOWN = 1
+export const DIRECTION_UP = 2
+export const DIRECTION_RIGHT = 3
+export const DIRECTION_COUNT = 4
+
 export const steps = ['idle', 'walk1', 'walk2']
 
 const tilewidth = 16
