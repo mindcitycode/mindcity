@@ -2,20 +2,14 @@ import { fsCanvas } from './lib/fscanvas.js'
 import { registerKeyboard } from './lib/keyboard.js'
 import { rafLoop } from './lib/loop.js'
 import { loadImage } from './lib/image.js'
-
-import { TinySprite } from "./lib/gl/sprite.js";
-import { CreateTexture } from "./lib/gl/utils.js"
-
+import { createWorld, addComponent, addEntity } from 'bitecs'
+import { Position, Orientation, Tile, pipeline } from './ecs.js'
+import { Renderer } from './lib/gl/renderer.js'
 import * as people from './people.js'
 
 const canvas = fsCanvas(400, 200)
 canvas.id = 'canvas'
 const keyDown = registerKeyboard()
-
-import { createWorld, addComponent, addEntity } from 'bitecs'
-import { Position, Orientation, Tile, pipeline } from './ecs.js'
-
-import { Renderer } from './lib/gl/renderer.js'
 
 const go666 = async () => {
     const imagesUrls = [
@@ -25,6 +19,8 @@ const go666 = async () => {
     const tile0 = renderer.makeTile(imagesUrls[0], 0, 0, 32, 32)
     const tile1 = renderer.makeTile(imagesUrls[0], 64, 64, 32, 32)
 
+    const animation0 = renderer.makeAnimation([tile0,tile1],10)
+
     const world = createWorld()
     world.renderer = renderer
 
@@ -32,19 +28,18 @@ const go666 = async () => {
     addComponent(world, Position, eid)
     addComponent(world, Orientation, eid)
     addComponent(world, Tile, eid)
+    addComponent(world, Animation, eid)
+ 
+ 
     Position.x[eid] = 10
     Position.y[eid] = 10
     Orientation.a[eid] = 0
-    Tile.index[eid] = 0
-    
+    Tile.index[eid] = 1
 
     rafLoop((dt, time) => {
         pipeline(world)
         Position.x[eid] += 1
-        
     })
-
-
 }
 
 go666()

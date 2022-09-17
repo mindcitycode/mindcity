@@ -12,7 +12,11 @@ function Tile(texture, frameX, frameY, frameW, frameH) {
     this.v1 = this.v0 + (frameH / texture.height);
     this.halfWidth = frameW / 2;
 }
-
+function Animation(tileIndexes, period) {
+    this.tileIndexes = tileIndexes
+    this.tileCount = tileIndexes.length
+    this.period = period
+}
 export const Renderer = async (canvas, imagesUrls) => {
 
     // create gl sprite batch renderer
@@ -23,18 +27,18 @@ export const Renderer = async (canvas, imagesUrls) => {
     const images = await Promise.all(imagesUrls.map(loadImage))
     const textures = images.map(image => CreateTexture(renderer.g, image, image.width, image.height))
 
+    // tiles
     const tiles = []
     const getTextureFromImageUrl = imageUrl => textures[imagesUrls.indexOf(imageUrl)]
-    
-    // create a tile, return index
     const makeTile = (imageUrl, frameX, frameY, frameW, frameH) => {
+        // create a tile, returns index
         tiles.push(
             new Tile(getTextureFromImageUrl(imageUrl), frameX, frameY, frameW, frameH)
         )
         return tiles.length - 1
     }
 
-    // add a tile to rendering batcg
+    // add a tile to rendering batch
     const putTile = (tileIndex, x, y, a) => {
         const tile = tiles[tileIndex]
         renderer.img(
@@ -67,10 +71,28 @@ export const Renderer = async (canvas, imagesUrls) => {
         );
     }
 
+    // animations
+    const animations = []
+    const makeAnimation = (tileIndexes, period) => {
+        // create an animation, returns index
+        animations.push(
+            new Animation(tileIndexes, period)
+        )
+        return animations.length - 1
+    }
+    const putAnimation = (animationIndex, ticks, x, y, a) => {
+        const { tileIndexes, tileCount, period } = animations[animationIndex]
+        const frame = Math.floor(ticks / period) % tileCount
+        const tileIndex = tileIndexes[frame]
+        putTile(tileIndex, x, y, a)
+    }
+
     return {
         ...renderer,
-        putTile,
         makeTile,
+        putTile,
+        makeAnimation,
+        putAnimation
     }
 
 }
