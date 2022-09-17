@@ -25,7 +25,7 @@ const codeHasDiagonalFlip = i => (i & FLIPPED_DIAGONALLY_FLAG) ? true : false
      "tilewidth":16
     }],
 */
-export const extractTiles = tilemap => {
+export const extractTileDefinitions = tilemap => {
     const tiles = []
     tilemap.tilesets.forEach(tileset => {
         for (let id = 0; id < tileset.tilecount; id++) {
@@ -72,7 +72,7 @@ export const getBounds = tilemap => {
 }
 export const tilemapRenderer = (renderer, tilemap) => {
 
-    const tiles = extractTiles(tilemap)
+    const tiles = extractTileDefinitions(tilemap)
 
     const tileIdxByGid = []
     tiles.forEach((tile, gid) => {
@@ -89,12 +89,19 @@ export const tilemapRenderer = (renderer, tilemap) => {
                 chunk.data.forEach((code, codeIdx) => {
                     if (code === 0) return
                     const gid = codeToGid(code)
+                    let scaleX = codeHasHorizontalFlip(code) ? -1 : 1
+                    let scaleY = codeHasVerticalFlip(code) ? -1 : 1
+                    let angle = 0
+                    if (codeHasDiagonalFlip(code)) {
+                        angle = Math.PI / 2
+                        scaleX *= -1
+                    }
                     const [tilewidth, tileheight] = tiles[gid].rectangle.slice(2)
                     const i = /*layer.startx +*/ chunk.x + codeIdx % chunk.width
                     const j = /*layer.starty +*/ chunk.y + Math.floor(codeIdx / chunk.width)
                     const x = -1 * origin.x + layer.x + i * tilemap.tilewidth
                     const y = -1 * origin.y + layer.y + j * tilemap.tileheight
-                    renderer.putTile(tileIdxByGid[gid], offx + x + tilewidth / 2, offy + y + tileheight / 2, 0)
+                    renderer.putTile(tileIdxByGid[gid], offx + x + tilewidth / 2, offy + y + tileheight / 2, angle, scaleX, scaleY)
                 })
             })
         })

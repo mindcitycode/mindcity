@@ -7,12 +7,12 @@ import { Position, Orientation, Tile, Animation, Move, pipeline } from './ecs.js
 import { Renderer } from './lib/gl/renderer.js'
 import * as people from './people.js'
 
-const canvas = fsCanvas(600, 600)
+const canvas = fsCanvas(300, 300)
 //const canvas = fsCanvas(800, 800)
 canvas.id = 'canvas'
 const keyDown = registerKeyboard()
 
-import { extractTiles, fixImagesPath, tilemapRenderer } from './lib/tilemap.js'
+import { extractTileDefinitions, fixImagesPath, tilemapRenderer } from './lib/tilemap.js'
 const imagesUrls = [
     "/assets/imgs/tilemap_packed.png"
 ]
@@ -70,9 +70,8 @@ const go666 = async () => {
     rafLoop((dt, time) => {
         renderer.cls()
         renderTilemap({
-            x:16*10*Math.cos(time),
-            y:16*10*Math.sin(time)
-            
+            x:0,
+            y:0            
         })
         pipeline(world)
         renderer.flush()

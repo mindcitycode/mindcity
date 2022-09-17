@@ -46,7 +46,7 @@ export const Renderer = async (canvas, imagesUrls) => {
     }
 
     // add a tile to rendering batch
-    const putTile = (tileIndex, x, y, a) => {
+    const putTile = (tileIndex, x, y, a, scalex = 1, scaley = 1) => {
         const tile = tiles[tileIndex]
         renderer.img(
             // Texture
@@ -66,9 +66,9 @@ export const Renderer = async (canvas, imagesUrls) => {
             // Translation Y
             y,
             // Scale X
-            1,
+            scalex,
             // Scale Y
-            1,
+            scaley,
             // UV0
             tile.u0,
             tile.v0,
