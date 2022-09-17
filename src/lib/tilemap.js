@@ -85,6 +85,7 @@ export const tilemapRenderer = (renderer, tilemap) => {
 
     return function render(origin) {
         tilemap.layers.map(layer => {
+            if (!layer.visible) return
             layer.chunks.forEach((chunk, chunkIdx) => {
                 chunk.data.forEach((code, codeIdx) => {
                     if (code === 0) return
