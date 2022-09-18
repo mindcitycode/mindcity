@@ -46,7 +46,7 @@ export const Renderer = async (canvas, imagesUrls) => {
     }
 
     // add a tile to rendering batch
-    const putTile = (tileIndex, x, y, a, scalex = 1, scaley = 1) => {
+    const putTile = (tileIndex, x, y, a, scalex = 1, scaley = 1, vsort) => {
         const tile = tiles[tileIndex]
         renderer.img(
             // Texture
@@ -74,7 +74,8 @@ export const Renderer = async (canvas, imagesUrls) => {
             tile.v0,
             // UV1
             tile.u1,
-            tile.v1
+            tile.v1,
+            vsort
         );
     }
 
@@ -91,7 +92,7 @@ export const Renderer = async (canvas, imagesUrls) => {
         const { tileIndexes, tileCount, period } = animations[animationIndex]
         const frame = Math.floor(ticks / period) % tileCount
         const tileIndex = tileIndexes[frame]
-        putTile(tileIndex, x, y, a)
+        putTile(tileIndex, x, y, a,1,1,0)
     }
 
     return {

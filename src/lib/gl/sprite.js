@@ -112,6 +112,8 @@ export function TinySprite(canvas) {
         ])
     );
     gl.activeTexture(33984);
+
+    const unsorted = []
     renderer = {
         'g': gl,
         'c': canvas,
@@ -122,7 +124,15 @@ export function TinySprite(canvas) {
         'cls': function () {
             gl.clear(16384);
         },
-        'img': function (texture, x, y, w, h, r, tx, ty, sx, sy, u0, v0, u1, v1) {
+        'img': function (texture, x, y, w, h, r, tx, ty, sx, sy, u0, v0, u1, v1, vsort) {
+            if (vsort !== undefined) {
+                //   console.log(vsort)
+                unsorted.push([texture, x, y, w, h, r, tx, ty, sx, sy, u0, v0, u1, v1, vsort])
+            } else {
+                renderer.img_real(texture, x, y, w, h, r, tx, ty, sx, sy, u0, v0, u1, v1)
+            }
+        },
+        'img_real': function (texture, x, y, w, h, r, tx, ty, sx, sy, u0, v0, u1, v1) {
             var x0 = x,
                 y0 = y,
                 x1 = x + w,
@@ -203,6 +213,16 @@ export function TinySprite(canvas) {
             }
         },
         'flush': function () {
+            unsorted.sort((a,b)=>{
+                const y1 = a[7] + a[14]
+                const y2 = b[7] + b[14]
+                return y1 - y2
+            })
+            unsorted.forEach( args => {
+                renderer.img_real(...args)
+            })
+            unsorted.length = 0
+ 
             if (count == 0) return;
             glBufferSubData(34962, 0, vPositionData.subarray(0, count * VERTEX_SIZE));
             glDrawElements(4, count * VERTICES_PER_QUAD, 5123, 0);

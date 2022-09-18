@@ -42,6 +42,16 @@ export const extractTileDefinitions = tilemap => {
                 ]
             }
         }
+        // tile having properties
+        tileset.tiles.forEach(({ id, properties }) => {
+            const gid = id + tileset.firstgid
+            const property = properties.find(p => p.name === 'vertical-sort-tile-offset')
+            if (property) {
+                tiles[gid].vsort = parseInt(property.value) * tileset.tileheight
+            }
+            console.log(tiles[gid])
+        })
+
     })
     return tiles
 }
@@ -97,12 +107,20 @@ export const tilemapRenderer = (renderer, tilemap) => {
                         angle = Math.PI / 2
                         scaleX *= -1
                     }
+                    const vsort = tiles[gid].vsort
                     const [tilewidth, tileheight] = tiles[gid].rectangle.slice(2)
                     const i = /*layer.startx +*/ chunk.x + codeIdx % chunk.width
                     const j = /*layer.starty +*/ chunk.y + Math.floor(codeIdx / chunk.width)
                     const x = -1 * origin.x + layer.x + i * tilemap.tilewidth
                     const y = -1 * origin.y + layer.y + j * tilemap.tileheight
-                    renderer.putTile(tileIdxByGid[gid], offx + x + tilewidth / 2, offy + y + tileheight / 2, angle, scaleX, scaleY)
+                    renderer.putTile(tileIdxByGid[gid],
+                        offx + x + tilewidth / 2,
+                        offy + y + tileheight / 2,
+                        angle,
+                        scaleX,
+                        scaleY,
+                        vsort
+                    )
                 })
             })
         })

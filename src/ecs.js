@@ -89,7 +89,7 @@ const displaySystem = world => {
     const ents = displayQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-        renderer.putTile(Tile.index[eid], Position.x[eid], Position.y[eid], Orientation.a[eid])
+        renderer.putTile(Tile.index[eid], Position.x[eid], Position.y[eid], Orientation.a[eid],1,1,0)
     }
     return world
 }
