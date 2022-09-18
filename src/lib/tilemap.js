@@ -49,7 +49,6 @@ export const extractTileDefinitions = tilemap => {
             if (property) {
                 tiles[gid].vsort = parseInt(property.value) * tileset.tileheight
             }
-            console.log(tiles[gid])
         })
 
     })
