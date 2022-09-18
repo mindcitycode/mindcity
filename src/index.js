@@ -13,7 +13,7 @@ const canvas = fsCanvas(320, 240)
 canvas.id = 'canvas'
 const keyDown = registerKeyboard()
 
-import { extractTileDefinitions, fixImagesPath, getBounds, tilemapRenderer } from './lib/tilemap.js'
+import { extractTileDefinitions, fixImagesPath, getBounds, parseTilemap } from './lib/tilemap.js'
 const imagesUrls = [
     "/assets/imgs/tilemap_packed.png"
 ]
@@ -32,7 +32,7 @@ const go666 = async () => {
 
     const map0 = await fetch('/assets/data/map0.json').then(x => x.json())
     fixImagesPath(map0, imagesUrls)
-    const renderTilemap = tilemapRenderer(renderer, map0)
+    const tilemap0 = parseTilemap(renderer, map0)
 
     //    const tiles = extractTiles(map0)
 
@@ -122,7 +122,7 @@ const go666 = async () => {
 
         //console.log(keyDown)
         renderer.cls()
-        renderTilemap({
+        tilemap0.render({
             x: world.tilemapOrigin.x,
             y: world.tilemapOrigin.y
         })

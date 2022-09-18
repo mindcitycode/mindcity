@@ -86,12 +86,12 @@ export const getBounds = tilemap => {
     return { x, y, width, height }
 
 }
-export const tilemapRenderer = (renderer, tilemap) => {
+export const parseTilemap = (renderer, tilemap) => {
 
-    const tiles = extractTileDefinitions(tilemap)
+    const tileDefinitions = extractTileDefinitions(tilemap)
 
     const tileIdxByGid = []
-    tiles.forEach((tile, gid) => {
+    tileDefinitions.forEach((tile, gid) => {
         tileIdxByGid[gid] = renderer.makeTile(tile.image, ...tile.rectangle)
     })
     const bounds = getBounds(tilemap)
@@ -104,7 +104,7 @@ export const tilemapRenderer = (renderer, tilemap) => {
             return
 
         const gid = codeToGid(code)
-        const [tilewidth, tileheight] = tiles[gid].rectangle.slice(2)
+        const [tilewidth, tileheight] = tileDefinitions[gid].rectangle.slice(2)
         const i = layer.x + chunk.x + codeIdx % chunk.width
         const j = layer.y + chunk.y + Math.floor(codeIdx / chunk.width)
         const x = i * tilemap.tilewidth
@@ -121,7 +121,7 @@ export const tilemapRenderer = (renderer, tilemap) => {
                 chunk.data.forEach((code, codeIdx) => {
                     if (code === 0) return
                     const tileOrigin = getTileOrigin(tilemap, layer, chunk, codeIdx, code)
-                    tiles[codeToGid(code)]?.collisionShapes?.objects.forEach(collisionObject => {
+                    tileDefinitions[codeToGid(code)]?.collisionShapes?.objects.forEach(collisionObject => {
                         const collisionRectangle = {
                             x: collisionObject.x + tileOrigin.x,
                             y: collisionObject.y + tileOrigin.y,
@@ -138,7 +138,7 @@ export const tilemapRenderer = (renderer, tilemap) => {
     }
     getCollisionShapes()
 
-    return function render(origin) {
+     function render(origin) {
         tilemap.layers.map(layer => {
             if (!layer.visible) return
             layer.chunks.forEach((chunk, chunkIdx) => {
@@ -155,8 +155,8 @@ export const tilemapRenderer = (renderer, tilemap) => {
                         angle = Math.PI / 2
                         scaleX *= -1
                     }
-                    const vsort = tiles[gid].vsort
-                    const [tilewidth, tileheight] = tiles[gid].rectangle.slice(2)
+                    const vsort = tileDefinitions[gid].vsort
+                    const [tilewidth, tileheight] = tileDefinitions[gid].rectangle.slice(2)
                     const i = chunk.x + codeIdx % chunk.width
                     const j = chunk.y + Math.floor(codeIdx / chunk.width)
                     const x = -1 * origin.x + layer.x + i * tilemap.tilewidth
@@ -173,5 +173,5 @@ export const tilemapRenderer = (renderer, tilemap) => {
             })
         })
     }
-
+    return { render }
 }
