@@ -134,11 +134,10 @@ export const parseTilemap = (renderer, tilemap) => {
                 })
             })
         })
-        console.log(allCollisionShapes)
+        return allCollisionShapes
     }
-    getCollisionShapes()
 
-     function render(origin) {
+    function render(origin) {
         tilemap.layers.map(layer => {
             if (!layer.visible) return
             layer.chunks.forEach((chunk, chunkIdx) => {
@@ -173,5 +172,5 @@ export const parseTilemap = (renderer, tilemap) => {
             })
         })
     }
-    return { render }
+    return { render, getCollisionShapes }
 }

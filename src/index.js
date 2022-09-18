@@ -17,6 +17,7 @@ import { extractTileDefinitions, fixImagesPath, getBounds, parseTilemap } from '
 const imagesUrls = [
     "/assets/imgs/tilemap_packed.png"
 ]
+import RBush from 'rbush'
 /*
 const go667 = async () => {
     
@@ -95,6 +96,19 @@ const go666 = async () => {
     const map0bounds = getBounds(map0)
     world.tilemapOrigin = { x: map0bounds.x, y: map0bounds.y }
 
+
+    const staticTilemapCollider = new RBush()
+    // remove, clear
+    const tilemapCollisionItems = tilemap0.getCollisionShapes().map(({ x, y, width, height, source }) => ({
+        minX: x,
+        minY: y,
+        maxX: x + width,
+        maxY: y + height,
+        source
+    }))
+    staticTilemapCollider.load(tilemapCollisionItems)
+    console.log({ tilemapCollisionItems })
+
     rafLoop((dt, time) => {
 
         const commands = {
@@ -127,6 +141,17 @@ const go666 = async () => {
             y: world.tilemapOrigin.y
         })
         pipeline(world)
+
+        const result = staticTilemapCollider.search({
+            minX: Position.x[heroEid] - 8,
+            maxX: Position.x[heroEid] + 8,
+            minY: Position.y[heroEid] + 6,
+            maxY: Position.y[heroEid] + 8
+        });
+        if (result.length) {
+            console.log(performance.now(),result)
+        }
+
         renderer.flush()
     })
 }

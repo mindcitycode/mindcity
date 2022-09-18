@@ -13,7 +13,8 @@
   "license": "agpl-3.0",
   "dependencies": {
     "bitecs": "^0.3.38",
-    "heapify": "^0.6.0"
+    "heapify": "^0.6.0",
+    "rbush": "^3.0.1"
   },
   "devDependencies": {
     "copy-webpack-plugin": "^11.0.0",
