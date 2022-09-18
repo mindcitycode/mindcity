@@ -21,7 +21,7 @@ const imagesUrls = [
 const go667 = async () => {
     
     
-
+ 
     console.log(map0.tilesets)
     console.log({ tiles })  
 }
@@ -37,9 +37,9 @@ const go666 = async () => {
     //    const tiles = extractTiles(map0)
 
     for (let a = 0; a < 4; a++) {
-        const tile0 = renderer.makeTile(imagesUrls[0], 16 * (23+a), 0, 16, 16)
-        const tile1 = renderer.makeTile(imagesUrls[0], 16 * (23+a), 16, 16, 16)
-        const tile2 = renderer.makeTile(imagesUrls[0], 16 * (23+a), 16 * 2, 16, 16)
+        const tile0 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), 0, 16, 16)
+        const tile1 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), 16, 16, 16)
+        const tile2 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), 16 * 2, 16, 16)
         const animation0 = renderer.makeAnimation([tile0, tile1, tile0, tile2], 12)
     }
     const world = createWorld()
@@ -93,7 +93,7 @@ const go666 = async () => {
     }
 
     world.tilemapOrigin = { x: 0, y: 0 }
-    
+
     rafLoop((dt, time) => {
 
         const commands = {
