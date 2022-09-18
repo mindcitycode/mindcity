@@ -43,13 +43,13 @@ export const movementControlSystem = world => {
             Velocity.y[eid] = 0.5 * dy
         }
         if (hasComponent(world, Animation, eid)) {
-            if ( Commands.goLeft[eid] ){
+            if (Commands.goLeft[eid]) {
                 Animation.index[eid] = 0
-            } else if ( Commands.goDown[eid] ){
+            } else if (Commands.goDown[eid]) {
                 Animation.index[eid] = 1
-            } else if ( Commands.goUp[eid] ){
+            } else if (Commands.goUp[eid]) {
                 Animation.index[eid] = 2
-            } else if ( Commands.goRight[eid] ){
+            } else if (Commands.goRight[eid]) {
                 Animation.index[eid] = 3
             }
         }
@@ -73,7 +73,12 @@ export const animationSystem = world => {
     const ents = animationQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-        renderer.putAnimation(Animation.index[eid], Animation.tick[eid], Math.round(Position.x[eid]), Math.round(Position.y[eid]), Orientation.a[eid])
+        renderer.putAnimation(
+            Animation.index[eid], Animation.tick[eid],
+            Math.round(Position.x[eid] - world.tilemapOrigin.x), 
+            Math.round(Position.y[eid] - world.tilemapOrigin.y),
+            Orientation.a[eid]
+        )
         Animation.tick[eid] += 1
     }
     return world

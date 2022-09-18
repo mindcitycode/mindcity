@@ -92,7 +92,8 @@ const go666 = async () => {
 
     }
 
-    const tilemapOrigin = { x: 0, y: 0 }
+    world.tilemapOrigin = { x: 0, y: 0 }
+    
     rafLoop((dt, time) => {
 
         const commands = {
@@ -115,14 +116,14 @@ const go666 = async () => {
         const speed = 1
         const dx = speed * commands.mapLeft ? -1 : commands.mapRight ? 1 : 0
         const dy = speed * commands.mapUp ? -1 : commands.mapDown ? 1 : 0
-        tilemapOrigin.x += dx
-        tilemapOrigin.y += dy
+        world.tilemapOrigin.x += dx
+        world.tilemapOrigin.y += dy
 
         //console.log(keyDown)
         renderer.cls()
         renderTilemap({
-            x: tilemapOrigin.x,
-            y: tilemapOrigin.y
+            x: world.tilemapOrigin.x,
+            y: world.tilemapOrigin.y
         })
         pipeline(world)
         renderer.flush()
