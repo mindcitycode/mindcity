@@ -30,6 +30,12 @@ export const Commands = defineComponent({
     goUp: Types.i8,
     goDown: Types.i8
 })
+export const FootCollider = defineComponent({
+    x: Types.f32,
+    y: Types.f32,
+    width: Types.f32,
+    height: Types.f32,
+})
 
 const movementControlQuery = defineQuery([Velocity, Commands])
 export const movementControlSystem = world => {
@@ -62,8 +68,25 @@ export const moveSystem = world => {
     const ents = moveQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-        Position.x[eid] += Velocity.x[eid]
-        Position.y[eid] += Velocity.y[eid]
+        const destx = Position.x[eid] + Velocity.x[eid]
+        const desty = Position.y[eid] + Velocity.y[eid]
+        let blocked = false
+        if (hasComponent(world, FootCollider, eid)) {
+            const result = world.staticTilemapCollider.search({
+                minX: destx - 6.,
+                maxX: destx + 6,
+                minY: desty + 6,
+                maxY: desty + 8
+            })
+            if (result.length) {
+                //   console.log(performance.now(),result)
+                blocked = true
+            }
+        }
+        if (!blocked) {
+            Position.x[eid] = destx
+            Position.y[eid] = desty
+        }
     }
     return world
 }
@@ -75,7 +98,7 @@ export const animationSystem = world => {
         const eid = ents[i]
         renderer.putAnimation(
             Animation.index[eid], Animation.tick[eid],
-            Math.round(Position.x[eid] - world.tilemapOrigin.x), 
+            Math.round(Position.x[eid] - world.tilemapOrigin.x),
             Math.round(Position.y[eid] - world.tilemapOrigin.y),
             Orientation.a[eid]
         )
@@ -89,7 +112,7 @@ const displaySystem = world => {
     const ents = displayQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-        renderer.putTile(Tile.index[eid], Position.x[eid], Position.y[eid], Orientation.a[eid],1,1,0)
+        renderer.putTile(Tile.index[eid], Position.x[eid], Position.y[eid], Orientation.a[eid], 1, 1, 0)
     }
     return world
 }

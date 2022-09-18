@@ -3,7 +3,7 @@ import { registerKeyboard } from './lib/keyboard.js'
 import { rafLoop } from './lib/loop.js'
 import { loadImage } from './lib/image.js'
 import { createWorld, addComponent, addEntity } from 'bitecs'
-import { Position, Orientation, Tile, Animation, Move, pipeline, Commands, Velocity } from './ecs.js'
+import { Position, Orientation, Tile, Animation, Move, pipeline, Commands, Velocity, FootCollider } from './ecs.js'
 import { Renderer } from './lib/gl/renderer.js'
 import * as people from './people.js'
 
@@ -91,6 +91,12 @@ const go666 = async () => {
         Velocity.x[eid] = 0
         Velocity.y[eid] = 0
 
+        addComponent(world, FootCollider, eid)
+        FootCollider.x[eid] = -8
+        FootCollider.width[eid] = 16
+        FootCollider.y[eid] = 6
+        FootCollider.height[eid] = 2
+
     }
 
     const map0bounds = getBounds(map0)
@@ -109,6 +115,7 @@ const go666 = async () => {
     staticTilemapCollider.load(tilemapCollisionItems)
     console.log({ tilemapCollisionItems })
 
+    world.staticTilemapCollider = staticTilemapCollider
     rafLoop((dt, time) => {
 
         const commands = {
@@ -141,17 +148,17 @@ const go666 = async () => {
             y: world.tilemapOrigin.y
         })
         pipeline(world)
-
-        const result = staticTilemapCollider.search({
-            minX: Position.x[heroEid] - 8,
-            maxX: Position.x[heroEid] + 8,
-            minY: Position.y[heroEid] + 6,
-            maxY: Position.y[heroEid] + 8
-        });
-        if (result.length) {
-            console.log(performance.now(),result)
-        }
-
+        /*
+                const result = staticTilemapCollider.search({
+                    minX: Position.x[heroEid] - 8,
+                    maxX: Position.x[heroEid] + 8,
+                    minY: Position.y[heroEid] + 6,
+                    maxY: Position.y[heroEid] + 8
+                });
+                if (result.length) {
+                    console.log(performance.now(),result)
+                }
+        */
         renderer.flush()
     })
 }
