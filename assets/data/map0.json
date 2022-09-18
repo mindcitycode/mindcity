@@ -238,7 +238,7 @@
                     18, 19, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     45, 46, 47, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     72, 73, 74, 0, 0, 0, 126, 127, 128, 0, 0, 0, 0, 0, 0, 0,
-                    99, 100, 101, 0, 0, 0, 207, 208, 209, 0, 0, 0, 0, 0, 0, 0,
+                    99, 0, 101, 0, 0, 0, 207, 0, 209, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -257,7 +257,6 @@
                 }],
          "height":16,
          "id":11,
-         "locked":true,
          "name":"house",
          "opacity":1,
          "startx":0,
@@ -368,6 +367,60 @@
          "tileheight":16,
          "tiles":[
                 {
+                 "id":125,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":1
+                        }]
+                }, 
+                {
+                 "id":126,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":1
+                        }]
+                }, 
+                {
+                 "id":127,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":1
+                        }]
+                }, 
+                {
+                 "id":128,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":1
+                        }]
+                }, 
+                {
+                 "id":129,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":1
+                        }]
+                }, 
+                {
+                 "id":130,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":1
+                        }]
+                }, 
+                {
                  "id":162,
                  "properties":[
                         {
@@ -456,7 +509,8 @@
                          "type":"int",
                          "value":0
                         }]
-                }, 
+                },
+            
                 {
                  "id":192,
                  "properties":[
@@ -503,6 +557,60 @@
                         }]
                 }, 
                 {
+                 "id":206,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":0
+                        }]
+                }, 
+                {
+                 "id":207,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":0
+                        }]
+                }, 
+                {
+                 "id":208,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":0
+                        }]
+                }, 
+                {
+                 "id":209,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":0
+                        }]
+                }, 
+                {
+                 "id":210,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":0
+                        }]
+                }, 
+                {
+                 "id":211,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":0
+                        }]
+                }, 
+                {
                  "id":232,
                  "properties":[
                         {
@@ -510,8 +618,7 @@
                          "type":"int",
                          "value":1
                         }]
-                },
-            
+                }, 
                 {
                  "id":233,
                  "properties":[
@@ -547,7 +654,8 @@
                          "type":"int",
                          "value":1
                         }]
-                }, 
+                },
+            
                 {
                  "id":314,
                  "properties":[
