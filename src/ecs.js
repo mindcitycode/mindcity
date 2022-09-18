@@ -42,9 +42,18 @@ export const movementControlSystem = world => {
             Velocity.x[eid] = 0.5 * dx
             Velocity.y[eid] = 0.5 * dy
         }
-
+        if (hasComponent(world, Animation, eid)) {
+            if ( Commands.goLeft[eid] ){
+                Animation.index[eid] = 0
+            } else if ( Commands.goDown[eid] ){
+                Animation.index[eid] = 1
+            } else if ( Commands.goUp[eid] ){
+                Animation.index[eid] = 2
+            } else if ( Commands.goRight[eid] ){
+                Animation.index[eid] = 3
+            }
+        }
     }
-
     return world
 }
 

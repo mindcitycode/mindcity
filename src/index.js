@@ -36,12 +36,12 @@ const go666 = async () => {
 
     //    const tiles = extractTiles(map0)
 
-    const tile0 = renderer.makeTile(imagesUrls[0], 18 * 23, 0, 16, 16)
-    const tile1 = renderer.makeTile(imagesUrls[0], 18 * 23, 16, 16, 16)
-    const tile2 = renderer.makeTile(imagesUrls[0], 18 * 23, 16 * 2, 16, 16)
-
-    const animation0 = renderer.makeAnimation([tile0, tile1, tile0, tile2], 12)
-
+    for (let a = 0; a < 4; a++) {
+        const tile0 = renderer.makeTile(imagesUrls[0], 16 * (23+a), 0, 16, 16)
+        const tile1 = renderer.makeTile(imagesUrls[0], 16 * (23+a), 16, 16, 16)
+        const tile2 = renderer.makeTile(imagesUrls[0], 16 * (23+a), 16 * 2, 16, 16)
+        const animation0 = renderer.makeAnimation([tile0, tile1, tile0, tile2], 12)
+    }
     const world = createWorld()
     world.renderer = renderer
     if (false)
@@ -65,11 +65,11 @@ const go666 = async () => {
         Position.x[eid] = 10 * x
         Position.y[eid] = 10 * (x + 3)
         Orientation.a[eid] = 0
-        Animation.index[eid] = animation0
+        Animation.index[eid] = 0
         Animation.tick[eid] = 2 * x
         Velocity.x[eid] = 0.25
         Velocity.y[eid] = 0
-      
+
     }
 
 
@@ -85,11 +85,11 @@ const go666 = async () => {
         Position.x[eid] = 160
         Position.y[eid] = 100
         Orientation.a[eid] = 0
-        Animation.index[eid] = animation0
+        Animation.index[eid] = 0
         Animation.tick[eid] = 0
         Velocity.x[eid] = 0
         Velocity.y[eid] = 0
-        
+
     }
 
     const tilemapOrigin = { x: 0, y: 0 }
