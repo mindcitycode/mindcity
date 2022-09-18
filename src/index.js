@@ -13,7 +13,7 @@ const canvas = fsCanvas(320, 240)
 canvas.id = 'canvas'
 const keyDown = registerKeyboard()
 
-import { extractTileDefinitions, fixImagesPath, tilemapRenderer } from './lib/tilemap.js'
+import { extractTileDefinitions, fixImagesPath, getBounds, tilemapRenderer } from './lib/tilemap.js'
 const imagesUrls = [
     "/assets/imgs/tilemap_packed.png"
 ]
@@ -92,7 +92,8 @@ const go666 = async () => {
 
     }
 
-    world.tilemapOrigin = { x: 0, y: 0 }
+    const map0bounds = getBounds(map0)
+    world.tilemapOrigin = { x: map0bounds.x, y: map0bounds.y }
 
     rafLoop((dt, time) => {
 

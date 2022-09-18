@@ -51,6 +51,13 @@ export const extractTileDefinitions = tilemap => {
             }
         })
 
+        // tile having collision shape 
+        tileset.tiles.forEach(({ id, objectgroup }) => {
+            if (objectgroup !== undefined) {
+                const gid = id + tileset.firstgid
+                tiles[gid].collisionShapes = objectgroup
+            }
+        })
     })
     return tiles
 }
@@ -92,12 +99,54 @@ export const tilemapRenderer = (renderer, tilemap) => {
     const offx = -1 * bounds.x
     const offy = -1 * bounds.y
 
-    return function render(origin) {
+    function getTileOrigin(tilemap, layer, chunk, codeIdx, code) {
+        if (code === 0)
+            return
+
+        const gid = codeToGid(code)
+        const [tilewidth, tileheight] = tiles[gid].rectangle.slice(2)
+        const i = layer.x + chunk.x + codeIdx % chunk.width
+        const j = layer.y + chunk.y + Math.floor(codeIdx / chunk.width)
+        const x = i * tilemap.tilewidth
+        const y = j * tilemap.tileheight
+        return { x, y }
+        // offx, offy ?
+    }
+
+    function getCollisionShapes() {
+        const allCollisionShapes = []
         tilemap.layers.map(layer => {
             if (!layer.visible) return
             layer.chunks.forEach((chunk, chunkIdx) => {
                 chunk.data.forEach((code, codeIdx) => {
                     if (code === 0) return
+                    const tileOrigin = getTileOrigin(tilemap, layer, chunk, codeIdx, code)
+                    tiles[codeToGid(code)]?.collisionShapes?.objects.forEach(collisionObject => {
+                        const collisionRectangle = {
+                            x: collisionObject.x + tileOrigin.x,
+                            y: collisionObject.y + tileOrigin.y,
+                            width: collisionObject.width,
+                            height: collisionObject.height,
+                            source: { tilemap, layer, chunk, code, codeIdx, tileOrigin }
+                        }
+                        allCollisionShapes.push(collisionRectangle)
+                    })
+                })
+            })
+        })
+        console.log(allCollisionShapes)
+    }
+    getCollisionShapes()
+
+    return function render(origin) {
+        tilemap.layers.map(layer => {
+            if (!layer.visible) return
+            layer.chunks.forEach((chunk, chunkIdx) => {
+                chunk.data.forEach((code, codeIdx) => {
+
+                    if (code === 0)
+                        return
+
                     const gid = codeToGid(code)
                     let scaleX = codeHasHorizontalFlip(code) ? -1 : 1
                     let scaleY = codeHasVerticalFlip(code) ? -1 : 1
@@ -108,8 +157,8 @@ export const tilemapRenderer = (renderer, tilemap) => {
                     }
                     const vsort = tiles[gid].vsort
                     const [tilewidth, tileheight] = tiles[gid].rectangle.slice(2)
-                    const i = /*layer.startx +*/ chunk.x + codeIdx % chunk.width
-                    const j = /*layer.starty +*/ chunk.y + Math.floor(codeIdx / chunk.width)
+                    const i = chunk.x + codeIdx % chunk.width
+                    const j = chunk.y + Math.floor(codeIdx / chunk.width)
                     const x = -1 * origin.x + layer.x + i * tilemap.tilewidth
                     const y = -1 * origin.y + layer.y + j * tilemap.tileheight
                     renderer.putTile(tileIdxByGid[gid],
