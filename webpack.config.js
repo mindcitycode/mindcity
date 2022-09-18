@@ -3,8 +3,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 
 const CopyPlugin = require("copy-webpack-plugin");
 
-
-module.exports = {
+const config = {
     devtool: "source-map",
 
     //   entry: "./src/scripts/app.js", //relative to root of the application
@@ -34,7 +33,15 @@ module.exports = {
     watchOptions: {
         ignored: /\.#|node_modules|~$/,
     }
+}
 
+module.exports = (env, args) => {
+    if (args.mode === 'development') {
+        delete config.optimization
+    } else if (args.mode === 'production') {
+        delete config.devtool
+    }
+    return config
 }
 /*
 const HtmlWebpackPlugin = require('html-webpack-plugin')
