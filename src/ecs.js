@@ -11,7 +11,13 @@ export const Velocity = defineComponent({
     x: Types.f32,
     y: Types.f32,
 })
+
+export const ORIENTATION_LEFT = 0
+export const ORIENTATION_DOWN = 1
+export const ORIENTATION_UP = 2
+export const ORIENTATION_RIGHT = 3
 export const Orientation = defineComponent({
+    // left down up right
     a: Types.f32
 })
 export const Tile = defineComponent({
@@ -31,10 +37,11 @@ export const Commands = defineComponent({
     goDown: Types.i8
 })
 export const FootCollider = defineComponent({
-    x: Types.f32,
-    y: Types.f32,
-    width: Types.f32,
-    height: Types.f32,
+    // from center
+    minX: Types.f32,
+    maxX: Types.f32,
+    minY: Types.f32,
+    maxY: Types.f32,
 })
 
 const movementControlQuery = defineQuery([Velocity, Commands])
@@ -44,20 +51,43 @@ export const movementControlSystem = world => {
         const eid = ents[i]
         const dx = Commands.goLeft[eid] ? -1 : Commands.goRight[eid] ? 1 : 0
         const dy = Commands.goUp[eid] ? -1 : Commands.goDown[eid] ? 1 : 0
+
+        let noMoveCommand = false
+        if (hasComponent(world, Orientation, eid)) {
+            if (Commands.goLeft[eid]) {
+                Orientation.a[eid] = ORIENTATION_LEFT
+            } else if (Commands.goDown[eid]) {
+                Orientation.a[eid] = ORIENTATION_DOWN
+            } else if (Commands.goUp[eid]) {
+                Orientation.a[eid] = ORIENTATION_UP
+            } else if (Commands.goRight[eid]) {
+                Orientation.a[eid] = ORIENTATION_RIGHT
+            } else {
+                noMoveCommand = true
+            }
+        }
         if (hasComponent(world, Velocity, eid)) {
             Velocity.x[eid] = 0.5 * dx
             Velocity.y[eid] = 0.5 * dy
         }
         if (hasComponent(world, Animation, eid)) {
-            if (Commands.goLeft[eid]) {
-                Animation.index[eid] = 0
-            } else if (Commands.goDown[eid]) {
-                Animation.index[eid] = 1
-            } else if (Commands.goUp[eid]) {
-                Animation.index[eid] = 2
-            } else if (Commands.goRight[eid]) {
-                Animation.index[eid] = 3
+            const a = Orientation.a[eid]
+            if (noMoveCommand) {
+                switch (a) {
+                    case ORIENTATION_LEFT: Animation.index[eid] = 1; break;
+                    case ORIENTATION_DOWN: Animation.index[eid] = 3; break;
+                    case ORIENTATION_UP: Animation.index[eid] = 5; break;
+                    case ORIENTATION_RIGHT: Animation.index[eid] = 7; break;
+                }
+            } else {
+                switch (a) {
+                    case ORIENTATION_LEFT: Animation.index[eid] = 0; break;
+                    case ORIENTATION_DOWN: Animation.index[eid] = 2; break;
+                    case ORIENTATION_UP: Animation.index[eid] = 4; break;
+                    case ORIENTATION_RIGHT: Animation.index[eid] = 6; break;
+                }
             }
+
         }
     }
     return world
@@ -73,10 +103,10 @@ export const moveSystem = world => {
         let blocked = false
         if (hasComponent(world, FootCollider, eid)) {
             const result = world.staticTilemapCollider.search({
-                minX: destx - 6.,
-                maxX: destx + 6,
-                minY: desty + 6,
-                maxY: desty + 8
+                minX: destx + FootCollider.minX[eid],
+                maxX: destx + FootCollider.maxX[eid],
+                minY: desty + FootCollider.minY[eid],
+                maxY: desty + FootCollider.maxY[eid]
             })
             if (result.length) {
                 //   console.log(performance.now(),result)
@@ -100,7 +130,7 @@ export const animationSystem = world => {
             Animation.index[eid], Animation.tick[eid],
             Math.round(Position.x[eid] - world.tilemapOrigin.x),
             Math.round(Position.y[eid] - world.tilemapOrigin.y),
-            Orientation.a[eid]
+            0//Orientation.a[eid]
         )
         Animation.tick[eid] += 1
     }

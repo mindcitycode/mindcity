@@ -42,6 +42,7 @@ const go666 = async () => {
         const tile1 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), 16, 16, 16)
         const tile2 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), 16 * 2, 16, 16)
         const animation0 = renderer.makeAnimation([tile0, tile1, tile0, tile2], 12)
+        const animation1 = renderer.makeAnimation([tile0],1)
     }
     const world = createWorld()
     world.renderer = renderer
@@ -92,10 +93,10 @@ const go666 = async () => {
         Velocity.y[eid] = 0
 
         addComponent(world, FootCollider, eid)
-        FootCollider.x[eid] = -8
-        FootCollider.width[eid] = 16
-        FootCollider.y[eid] = 6
-        FootCollider.height[eid] = 2
+        FootCollider.minX[eid] = -6
+        FootCollider.maxX[eid] = 6
+        FootCollider.minY[eid] = 6
+        FootCollider.maxY[eid] = 8
 
     }
 
