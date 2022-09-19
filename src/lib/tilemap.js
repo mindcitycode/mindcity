@@ -75,15 +75,19 @@ export const fixImagesPath = (tilemap, imagesUrls) => {
 }
 
 export const getBounds = tilemap => {
-    let x = Number.POSITIVE_INFINITY
-    let y = Number.POSITIVE_INFINITY
+    let minX = Number.POSITIVE_INFINITY
+    let minY = Number.POSITIVE_INFINITY
+    let maxX = Number.NEGATIVE_INFINITY
+    let maxY = Number.NEGATIVE_INFINITY
     tilemap.layers.forEach(layer => {
-        x = Math.min(x, layer.startx * tilemap.tilewidth)
-        y = Math.min(y, layer.starty * tilemap.tileheight)
+        minX = Math.min(minX, layer.startx * tilemap.tilewidth)
+        minY = Math.min(minY, layer.starty * tilemap.tileheight)
+        maxX = Math.max(maxX, (layer.startx + layer.width) * tilemap.tilewidth)
+        maxY = Math.max(maxY, (layer.starty + layer.height) * tilemap.tileheight)
     })
     const width = tilemap.tilewidth * tilemap.width
     const height = tilemap.tileheight * tilemap.height
-    return { x, y, width, height }
+    return {  minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY }
 
 }
 export const parseTilemap = (renderer, tilemap) => {
@@ -94,11 +98,6 @@ export const parseTilemap = (renderer, tilemap) => {
     tileDefinitions.forEach((tile, gid) => {
         tileIdxByGid[gid] = renderer.makeTile(tile.image, ...tile.rectangle)
     })
-    const bounds = getBounds(tilemap)
-
-    const offx = -1 * bounds.x
-    const offy = -1 * bounds.y
-
     function getTileOrigin(tilemap, layer, chunk, codeIdx, code) {
         if (code === 0)
             return
