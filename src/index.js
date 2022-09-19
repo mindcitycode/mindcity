@@ -3,7 +3,7 @@ import { registerKeyboard } from './lib/keyboard.js'
 import { rafLoop } from './lib/loop.js'
 import { loadImage } from './lib/image.js'
 import { createWorld, addComponent, addEntity } from 'bitecs'
-import { Position, Orientation, Tile, Animation, Move, pipeline, Commands, Velocity, FootCollider } from './ecs.js'
+import { Position, Orientation, Tile, Animation, Move, pipeline, Commands, Velocity, FootCollider, CultFollower, CULT_BLACK, CULT_COUNT, CULT_BLOND, CULT_HELMET } from './ecs.js'
 import { Renderer } from './lib/gl/renderer.js'
 import * as people from './people.js'
 
@@ -37,12 +37,15 @@ const go666 = async () => {
 
     //    const tiles = extractTiles(map0)
 
-    for (let a = 0; a < 4; a++) {
-        const tile0 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), 0, 16, 16)
-        const tile1 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), 16, 16, 16)
-        const tile2 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), 16 * 2, 16, 16)
-        const animation0 = renderer.makeAnimation([tile0, tile1, tile0, tile2], 12)
-        const animation1 = renderer.makeAnimation([tile0], 1)
+    for (let cultIndex = 0; cultIndex < CULT_COUNT; cultIndex++) {
+        const top = 3 * 16 * cultIndex
+        for (let a = 0; a < 4; a++) {
+            const tile0 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), top + 0 * 16, 16, 16)
+            const tile1 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), top + 1 * 16, 16, 16)
+            const tile2 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), top + 2 * 16 , 16, 16)
+            const animation0 = renderer.makeAnimation([tile0, tile1, tile0, tile2], 12)
+            const animation1 = renderer.makeAnimation([tile0], 1)
+        }
     }
     const world = createWorld()
     world.renderer = renderer
@@ -66,27 +69,30 @@ const go666 = async () => {
         addComponent(world, Velocity, eid)
         addComponent(world, Commands, eid)
         addComponent(world, FootCollider, eid)
+        addComponent(world, CultFollower, eid)
         FootCollider.minX[eid] = -6
         FootCollider.maxX[eid] = 6
         FootCollider.minY[eid] = 6
         FootCollider.maxY[eid] = 8
-
         if (x < 5) {
+            CultFollower.index[eid] = x%CULT_COUNT
             Position.x[eid] = 10 * x
             Position.y[eid] = 60 + 10 * (x + 3)
             //  Orientation.a[eid] = 0
             //  Animation.index[eid] = 0
-            //Animation.tick[eid] = 2 * x
+            Animation.tick[eid] = 2 * x
             // Velocity.x[eid] = 0.25
             //Velocity.y[eid] = 0
             Commands.goRight[eid] = 1
 
         } else {
+            CultFollower.index[eid] = 0
             Position.x[eid] = 100 + 10 * x
             Position.y[eid] = 10 * (x + 3)
             Commands.goDown[eid] = 1
             Commands.goLeft[eid] = 1
-
+            Animation.tick[eid] = 2 * x
+      
         }
     }
 
@@ -101,7 +107,8 @@ const go666 = async () => {
         addComponent(world, Commands, eid)
         addComponent(world, Velocity, eid)
         addComponent(world, FootCollider, eid)
-
+        addComponent(world, CultFollower, eid)
+      
         Position.x[eid] = 160
         Position.y[eid] = 100
         Orientation.a[eid] = 0
@@ -114,6 +121,7 @@ const go666 = async () => {
         FootCollider.maxX[eid] = 6
         FootCollider.minY[eid] = 6
         FootCollider.maxY[eid] = 8
+        CultFollower.index[eid] = CULT_HELMET
 
     }
 

@@ -1,7 +1,14 @@
 import { defineComponent, defineQuery, hasComponent, pipe, Types } from 'bitecs'
 
-export const Follower = defineComponent({
-    cultIndex: Types.i8
+export const CULT_GREEN = 0
+export const CULT_RED = 1
+export const CULT_VIOLET = 2
+export const CULT_HELMET = 3
+export const CULT_BLOND = 4
+export const CULT_BLACK = 5
+export const CULT_COUNT = 6
+export const CultFollower = defineComponent({
+    index: Types.i8
 })
 export const Position = defineComponent({
     x: Types.f32,
@@ -72,19 +79,21 @@ export const movementControlSystem = world => {
         }
         if (hasComponent(world, Animation, eid)) {
             const a = Orientation.a[eid]
+            const cult = hasComponent(world,CultFollower,eid) ? (CultFollower.index[eid] ) : (0)
+            const cultOffset = 8 * cult  //hasComponent(world,CultFollower,eid) ? (CultFollower.index[eid] * 5) : (0)
             if (noMoveCommand) {
                 switch (a) {
-                    case ORIENTATION_LEFT: Animation.index[eid] = 1; break;
-                    case ORIENTATION_DOWN: Animation.index[eid] = 3; break;
-                    case ORIENTATION_UP: Animation.index[eid] = 5; break;
-                    case ORIENTATION_RIGHT: Animation.index[eid] = 7; break;
+                    case ORIENTATION_LEFT: Animation.index[eid] = cultOffset + 1; break;
+                    case ORIENTATION_DOWN: Animation.index[eid] = cultOffset + 3; break;
+                    case ORIENTATION_UP: Animation.index[eid] = cultOffset + 5; break;
+                    case ORIENTATION_RIGHT: Animation.index[eid] = cultOffset + 7; break;
                 }
             } else {
                 switch (a) {
-                    case ORIENTATION_LEFT: Animation.index[eid] = 0; break;
-                    case ORIENTATION_DOWN: Animation.index[eid] = 2; break;
-                    case ORIENTATION_UP: Animation.index[eid] = 4; break;
-                    case ORIENTATION_RIGHT: Animation.index[eid] = 6; break;
+                    case ORIENTATION_LEFT: Animation.index[eid] = cultOffset + 0; break;
+                    case ORIENTATION_DOWN: Animation.index[eid] = cultOffset + 2; break;
+                    case ORIENTATION_UP: Animation.index[eid] = cultOffset + 4; break;
+                    case ORIENTATION_RIGHT: Animation.index[eid] = cultOffset + 6; break;
                 }
             }
 
