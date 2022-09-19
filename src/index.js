@@ -64,6 +64,7 @@ const go666 = async () => {
         addComponent(world, Animation, eid)
         addComponent(world, Move, eid)
         addComponent(world, Velocity, eid)
+        addComponent(world, Commands, eid)
         Position.x[eid] = 10 * x
         Position.y[eid] = 10 * (x + 3)
         Orientation.a[eid] = 0
@@ -71,6 +72,7 @@ const go666 = async () => {
         Animation.tick[eid] = 2 * x
         Velocity.x[eid] = 0.25
         Velocity.y[eid] = 0
+        Commands.goRight[eid] = 1
 
     }
 
