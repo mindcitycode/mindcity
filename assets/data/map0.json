@@ -368,6 +368,37 @@
          "tileheight":16,
          "tiles":[
                 {
+                 "id":98,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "name":"",
+                     "objects":[
+                            {
+                             "class":"",
+                             "height":16,
+                             "id":3,
+                             "name":"",
+                             "rotation":0,
+                             "visible":true,
+                             "width":16,
+                             "x":0,
+                             "y":0
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    },
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":0
+                        }]
+                }, 
+                {
                  "id":125,
                  "properties":[
                         {
@@ -501,13 +532,13 @@
                          "type":"int",
                          "value":0
                         }]
-                }, 
+                },
+            
                 {
                  "id":191,
                  "objectgroup":
                     {
                      "draworder":"index",
-                     "id":2,
                      "name":"",
                      "objects":[
                             {
@@ -533,14 +564,12 @@
                          "type":"int",
                          "value":0
                         }]
-                },
-            
+                }, 
                 {
                  "id":192,
                  "objectgroup":
                     {
                      "draworder":"index",
-                     "id":2,
                      "name":"",
                      "objects":[
                             {
@@ -599,7 +628,6 @@
                  "objectgroup":
                     {
                      "draworder":"index",
-                     "id":2,
                      "name":"",
                      "objects":[
                             {
@@ -631,7 +659,6 @@
                  "objectgroup":
                     {
                      "draworder":"index",
-                     "id":2,
                      "name":"",
                      "objects":[
                             {
@@ -672,7 +699,6 @@
                  "objectgroup":
                     {
                      "draworder":"index",
-                     "id":2,
                      "name":"",
                      "objects":[
                             {
@@ -758,7 +784,6 @@
                  "objectgroup":
                     {
                      "draworder":"index",
-                     "id":2,
                      "name":"",
                      "objects":[
                             {
@@ -784,7 +809,8 @@
                          "type":"int",
                          "value":0
                         }]
-                }, 
+                },
+            
                 {
                  "id":313,
                  "properties":[
@@ -793,8 +819,7 @@
                          "type":"int",
                          "value":1
                         }]
-                },
-            
+                }, 
                 {
                  "id":314,
                  "properties":[
@@ -827,7 +852,6 @@
                  "objectgroup":
                     {
                      "draworder":"index",
-                     "id":2,
                      "name":"",
                      "objects":[
                             {
@@ -859,7 +883,6 @@
                  "objectgroup":
                     {
                      "draworder":"index",
-                     "id":2,
                      "name":"",
                      "objects":[
                             {
@@ -891,7 +914,6 @@
                  "objectgroup":
                     {
                      "draworder":"index",
-                     "id":2,
                      "name":"",
                      "objects":[
                             {
