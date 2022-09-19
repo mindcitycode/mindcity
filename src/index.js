@@ -158,16 +158,18 @@ const go666 = async () => {
                 must.mapLeft = true
             } else if (fivepart.x === 4) {
                 must.mapRight = true
-            } else if (fivepart.x === 2) {
+            } else if (fivepart.x === 3) {
                 must.mapLeft = false
+            } else if (fivepart.x === 1) {
                 must.mapRight = false
             }
             if (fivepart.y === 0) {
                 must.mapUp = true
             } else if (fivepart.y === 4) {
                 must.mapDown = true
-            } else if (fivepart.y === 2) {
+            } else if (fivepart.y === 3) {
                 must.mapUp = false
+            } else if (fivepart.y === 1) {
                 must.mapDown = false
             }
             return must
@@ -175,7 +177,7 @@ const go666 = async () => {
         //     console.log(fivepart)
     }
     const cameraFollow = CameraFollow()
-    
+
     rafLoop((dt, time) => {
         const commands = {
             mapUp: keyDown.KeyW,
@@ -188,13 +190,13 @@ const go666 = async () => {
             heroRight: keyDown.ArrowRight
         }
         world.commands = commands
-        
+
         const mapMust = cameraFollow()
         commands.mapLeft = commands.mapLeft || mapMust.mapLeft
         commands.mapRight = commands.mapRight || mapMust.mapRight
         commands.mapUp = commands.mapUp || mapMust.mapUp
         commands.mapDown = commands.mapDown || mapMust.mapDown
-        
+
 
 
         Commands.goUp[heroEid] = commands.heroUp
