@@ -3,7 +3,7 @@ export const fsCanvas = (width, height) => {
     const $style = document.createElement('style')
     $style.textContent = `
 body { 
-    background-color : grey;
+    background-color : black;
     margin:0;
     border:0;
     padding : 0;
