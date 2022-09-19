@@ -192,11 +192,12 @@ const go666 = async () => {
         world.commands = commands
 
         const mapMust = cameraFollow()
+    /*
         commands.mapLeft = commands.mapLeft || mapMust.mapLeft
         commands.mapRight = commands.mapRight || mapMust.mapRight
         commands.mapUp = commands.mapUp || mapMust.mapUp
         commands.mapDown = commands.mapDown || mapMust.mapDown
-
+*/
 
 
         Commands.goUp[heroEid] = commands.heroUp

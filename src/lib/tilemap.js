@@ -161,8 +161,8 @@ export const parseTilemap = (renderer, tilemap) => {
                     const x = -1 * origin.x + layer.x + i * tilemap.tilewidth
                     const y = -1 * origin.y + layer.y + j * tilemap.tileheight
                     renderer.putTile(tileIdxByGid[gid],
-                        offx + x + tilewidth / 2,
-                        offy + y + tileheight / 2,
+                        /*offx + */ x + tilewidth / 2,
+                        /*offy +*/  y + tileheight / 2,
                         angle,
                         scaleX,
                         scaleY,
