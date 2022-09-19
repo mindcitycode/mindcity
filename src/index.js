@@ -70,7 +70,7 @@ const go666 = async () => {
         addComponent(world, Commands, eid)
         addComponent(world, FootCollider, eid)
         addComponent(world, CultFollower, eid)
-        FootCollider.minX[eid] = -6
+        FootCollider.minX[eid] = -5
         FootCollider.maxX[eid] = 6
         FootCollider.minY[eid] = 6
         FootCollider.maxY[eid] = 8
@@ -117,7 +117,7 @@ const go666 = async () => {
         Velocity.x[eid] = 0
         Velocity.y[eid] = 0
 
-        FootCollider.minX[eid] = -6
+        FootCollider.minX[eid] = -5
         FootCollider.maxX[eid] = 6
         FootCollider.minY[eid] = 6
         FootCollider.maxY[eid] = 8
