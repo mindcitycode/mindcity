@@ -98,25 +98,31 @@ export const moveSystem = world => {
     const ents = moveQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-        const destx = Position.x[eid] + Velocity.x[eid]
-        const desty = Position.y[eid] + Velocity.y[eid]
         let blocked = false
+
         if (hasComponent(world, FootCollider, eid)) {
-            const result = world.staticTilemapCollider.search({
-                minX: destx + FootCollider.minX[eid],
-                maxX: destx + FootCollider.maxX[eid],
-                minY: desty + FootCollider.minY[eid],
-                maxY: desty + FootCollider.maxY[eid]
-            })
-            if (result.length) {
-                //   console.log(performance.now(),result)
-                blocked = true
+            blocked = true
+
+            for (let tryIdx = 0; tryIdx < 3; tryIdx++) {
+                const destx = ((tryIdx === 0) || (tryIdx === 1)) ? (Position.x[eid] + Velocity.x[eid]) : (Position.x[eid])
+                const desty = ((tryIdx === 0) || (tryIdx === 2)) ? (Position.y[eid] + Velocity.y[eid]) : (Position.y[eid])
+                const collides = world.staticTilemapCollider.collides({
+                    //            const result = world.staticTilemapCollider.search({
+                    minX: destx + FootCollider.minX[eid],
+                    maxX: destx + FootCollider.maxX[eid],
+                    minY: desty + FootCollider.minY[eid],
+                    maxY: desty + FootCollider.maxY[eid]
+                })
+                if (collides) {
+                    blocked = true
+                } else {
+                    Position.x[eid] = destx
+                    Position.y[eid] = desty
+                    break;
+                }
             }
         }
-        if (!blocked) {
-            Position.x[eid] = destx
-            Position.y[eid] = desty
-        }
+
     }
     return world
 }
