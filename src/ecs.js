@@ -49,9 +49,7 @@ export const movementControlSystem = world => {
     const ents = movementControlQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-        const dx = Commands.goLeft[eid] ? -1 : Commands.goRight[eid] ? 1 : 0
-        const dy = Commands.goUp[eid] ? -1 : Commands.goDown[eid] ? 1 : 0
-
+   
         let noMoveCommand = false
         if (hasComponent(world, Orientation, eid)) {
             if (Commands.goLeft[eid]) {
@@ -67,9 +65,11 @@ export const movementControlSystem = world => {
             }
         }
         if (hasComponent(world, Velocity, eid)) {
+            const dx = Commands.goLeft[eid] ? -1 : Commands.goRight[eid] ? 1 : 0
+            const dy = Commands.goUp[eid] ? -1 : Commands.goDown[eid] ? 1 : 0
             Velocity.x[eid] = 0.5 * dx
             Velocity.y[eid] = 0.5 * dy
-        }
+         }
         if (hasComponent(world, Animation, eid)) {
             const a = Orientation.a[eid]
             if (noMoveCommand) {
