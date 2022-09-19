@@ -128,9 +128,7 @@ const go666 = async () => {
 
     const map0bounds = getBounds(map0)
 
-    console.log({ map0bounds })
     world.tilemapOrigin = { x: map0bounds.minX, y: map0bounds.minY }
-
 
     const staticTilemapCollider = new RBush()
     // remove, clear
@@ -142,8 +140,7 @@ const go666 = async () => {
         source
     }))
     staticTilemapCollider.load(tilemapCollisionItems)
-    console.log({ tilemapCollisionItems })
-
+  
     world.staticTilemapCollider = staticTilemapCollider
 
     const CameraFollow = () => {

@@ -87,7 +87,7 @@ export const getBounds = tilemap => {
     })
     const width = tilemap.tilewidth * tilemap.width
     const height = tilemap.tileheight * tilemap.height
-    return {  minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY }
+    return { minX, minY, maxX, maxY, width: maxX - minX, height: maxY - minY }
 
 }
 export const parseTilemap = (renderer, tilemap) => {
