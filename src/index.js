@@ -140,7 +140,7 @@ const go666 = async () => {
         source
     }))
     staticTilemapCollider.load(tilemapCollisionItems)
-  
+
     world.staticTilemapCollider = staticTilemapCollider
 
     const CameraFollow = () => {
