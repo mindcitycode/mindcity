@@ -771,6 +771,130 @@
                         }]
                 }, 
                 {
+                 "id":234,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":2
+                        }]
+                }, 
+                {
+                 "id":235,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":2
+                        }]
+                },
+            
+                {
+                 "id":236,
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":2
+                        }]
+                }, 
+                {
+                 "id":261,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "id":2,
+                     "name":"",
+                     "objects":[
+                            {
+                             "class":"",
+                             "height":16,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "visible":true,
+                             "width":6,
+                             "x":10,
+                             "y":0
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    },
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":1
+                        }]
+                }, 
+                {
+                 "id":262,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "id":2,
+                     "name":"",
+                     "objects":[
+                            {
+                             "class":"",
+                             "height":16,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "visible":true,
+                             "width":16,
+                             "x":0,
+                             "y":0
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    },
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":1
+                        }]
+                }, 
+                {
+                 "id":263,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "id":2,
+                     "name":"",
+                     "objects":[
+                            {
+                             "class":"",
+                             "height":16,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "visible":true,
+                             "width":6,
+                             "x":0,
+                             "y":0
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    },
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":1
+                        }]
+                }, 
+                {
                  "id":286,
                  "properties":[
                         {
@@ -809,8 +933,103 @@
                          "type":"int",
                          "value":0
                         }]
-                },
-            
+                }, 
+                {
+                 "id":288,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "id":2,
+                     "name":"",
+                     "objects":[
+                            {
+                             "class":"",
+                             "height":14,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "visible":true,
+                             "width":6,
+                             "x":10,
+                             "y":0
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    },
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":0
+                        }]
+                }, 
+                {
+                 "id":289,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "id":2,
+                     "name":"",
+                     "objects":[
+                            {
+                             "class":"",
+                             "height":15,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "visible":true,
+                             "width":16,
+                             "x":0,
+                             "y":0
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    },
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":0
+                        }]
+                }, 
+                {
+                 "id":290,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "id":2,
+                     "name":"",
+                     "objects":[
+                            {
+                             "class":"",
+                             "height":14,
+                             "id":1,
+                             "name":"",
+                             "rotation":0,
+                             "visible":true,
+                             "width":6,
+                             "x":0,
+                             "y":0
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    },
+                 "properties":[
+                        {
+                         "name":"vertical-sort-tile-offset",
+                         "type":"int",
+                         "value":0
+                        }]
+                }, 
                 {
                  "id":313,
                  "properties":[
@@ -939,7 +1158,8 @@
                          "type":"int",
                          "value":0
                         }]
-                }, 
+                },
+            
                 {
                  "id":367,
                  "properties":[
