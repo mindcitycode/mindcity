@@ -18,6 +18,7 @@ const imagesUrls = [
     "/assets/imgs/tilemap_packed.png"
 ]
 import RBush from 'rbush'
+import { clamp } from './lib/clamp.js'
 /*
 const go667 = async () => {
     
@@ -126,7 +127,9 @@ const go666 = async () => {
     }
 
     const map0bounds = getBounds(map0)
-    world.tilemapOrigin = { x: map0bounds.x, y: map0bounds.y }
+
+    console.log({ map0bounds })
+    world.tilemapOrigin = { x: map0bounds.minX, y: map0bounds.minY }
 
 
     const staticTilemapCollider = new RBush()
@@ -192,12 +195,12 @@ const go666 = async () => {
         world.commands = commands
 
         const mapMust = cameraFollow()
-    /*
-        commands.mapLeft = commands.mapLeft || mapMust.mapLeft
-        commands.mapRight = commands.mapRight || mapMust.mapRight
-        commands.mapUp = commands.mapUp || mapMust.mapUp
-        commands.mapDown = commands.mapDown || mapMust.mapDown
-*/
+        /*
+            commands.mapLeft = commands.mapLeft || mapMust.mapLeft
+            commands.mapRight = commands.mapRight || mapMust.mapRight
+            commands.mapUp = commands.mapUp || mapMust.mapUp
+            commands.mapDown = commands.mapDown || mapMust.mapDown
+    */
 
 
         Commands.goUp[heroEid] = commands.heroUp
@@ -208,8 +211,13 @@ const go666 = async () => {
         const speed = 1
         const dx = speed * commands.mapLeft ? -1 : commands.mapRight ? 1 : 0
         const dy = speed * commands.mapUp ? -1 : commands.mapDown ? 1 : 0
+
         world.tilemapOrigin.x += dx
         world.tilemapOrigin.y += dy
+
+        world.tilemapOrigin.x = clamp(world.tilemapOrigin.x, map0bounds.minX, map0bounds.maxX - canvas.width)
+        world.tilemapOrigin.y = clamp(world.tilemapOrigin.y, map0bounds.minY, map0bounds.maxY - canvas.height)
+
 
         //console.log(keyDown)
         renderer.cls()
