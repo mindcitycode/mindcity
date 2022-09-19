@@ -42,7 +42,7 @@ const go666 = async () => {
         for (let a = 0; a < 4; a++) {
             const tile0 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), top + 0 * 16, 16, 16)
             const tile1 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), top + 1 * 16, 16, 16)
-            const tile2 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), top + 2 * 16 , 16, 16)
+            const tile2 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), top + 2 * 16, 16, 16)
             const animation0 = renderer.makeAnimation([tile0, tile1, tile0, tile2], 12)
             const animation1 = renderer.makeAnimation([tile0], 1)
         }
@@ -75,7 +75,7 @@ const go666 = async () => {
         FootCollider.minY[eid] = 6
         FootCollider.maxY[eid] = 8
         if (x < 5) {
-            CultFollower.index[eid] = x%CULT_COUNT
+            CultFollower.index[eid] = x % CULT_COUNT
             Position.x[eid] = 10 * x
             Position.y[eid] = 60 + 10 * (x + 3)
             //  Orientation.a[eid] = 0
@@ -92,7 +92,7 @@ const go666 = async () => {
             Commands.goDown[eid] = 1
             Commands.goLeft[eid] = 1
             Animation.tick[eid] = 2 * x
-      
+
         }
     }
 
@@ -108,7 +108,7 @@ const go666 = async () => {
         addComponent(world, Velocity, eid)
         addComponent(world, FootCollider, eid)
         addComponent(world, CultFollower, eid)
-      
+
         Position.x[eid] = 160
         Position.y[eid] = 100
         Orientation.a[eid] = 0
@@ -142,8 +142,41 @@ const go666 = async () => {
     console.log({ tilemapCollisionItems })
 
     world.staticTilemapCollider = staticTilemapCollider
-    rafLoop((dt, time) => {
 
+    const CameraFollow = () => {
+        const must = {}
+        return function () {
+            const heroScreenPosition = {
+                x: Position.x[heroEid] - world.tilemapOrigin.x,
+                y: Position.y[heroEid] - world.tilemapOrigin.y,
+            }
+            const fivepart = {
+                x: Math.floor(5 * heroScreenPosition.x / canvas.width),
+                y: Math.floor(5 * heroScreenPosition.y / canvas.height)
+            }
+            if (fivepart.x === 0) {
+                must.mapLeft = true
+            } else if (fivepart.x === 4) {
+                must.mapRight = true
+            } else if (fivepart.x === 2) {
+                must.mapLeft = false
+                must.mapRight = false
+            }
+            if (fivepart.y === 0) {
+                must.mapUp = true
+            } else if (fivepart.y === 4) {
+                must.mapDown = true
+            } else if (fivepart.y === 2) {
+                must.mapUp = false
+                must.mapDown = false
+            }
+            return must
+        }
+        //     console.log(fivepart)
+    }
+    const cameraFollow = CameraFollow()
+    
+    rafLoop((dt, time) => {
         const commands = {
             mapUp: keyDown.KeyW,
             mapLeft: keyDown.KeyA,
@@ -155,6 +188,14 @@ const go666 = async () => {
             heroRight: keyDown.ArrowRight
         }
         world.commands = commands
+        
+        const mapMust = cameraFollow()
+        commands.mapLeft = commands.mapLeft || mapMust.mapLeft
+        commands.mapRight = commands.mapRight || mapMust.mapRight
+        commands.mapUp = commands.mapUp || mapMust.mapUp
+        commands.mapDown = commands.mapDown || mapMust.mapDown
+        
+
 
         Commands.goUp[heroEid] = commands.heroUp
         Commands.goLeft[heroEid] = commands.heroLeft
