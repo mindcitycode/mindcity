@@ -42,7 +42,7 @@ const go666 = async () => {
         const tile1 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), 16, 16, 16)
         const tile2 = renderer.makeTile(imagesUrls[0], 16 * (23 + a), 16 * 2, 16, 16)
         const animation0 = renderer.makeAnimation([tile0, tile1, tile0, tile2], 12)
-        const animation1 = renderer.makeAnimation([tile0],1)
+        const animation1 = renderer.makeAnimation([tile0], 1)
     }
     const world = createWorld()
     world.renderer = renderer
@@ -65,15 +65,29 @@ const go666 = async () => {
         addComponent(world, Move, eid)
         addComponent(world, Velocity, eid)
         addComponent(world, Commands, eid)
-        Position.x[eid] = 10 * x
-        Position.y[eid] = 10 * (x + 3)
-        Orientation.a[eid] = 0
-        Animation.index[eid] = 0
-        Animation.tick[eid] = 2 * x
-        Velocity.x[eid] = 0.25
-        Velocity.y[eid] = 0
-        Commands.goRight[eid] = 1
+        addComponent(world, FootCollider, eid)
+        FootCollider.minX[eid] = -6
+        FootCollider.maxX[eid] = 6
+        FootCollider.minY[eid] = 6
+        FootCollider.maxY[eid] = 8
 
+        if (x < 5) {
+            Position.x[eid] = 10 * x
+            Position.y[eid] = 60 + 10 * (x + 3)
+            //  Orientation.a[eid] = 0
+            //  Animation.index[eid] = 0
+            //Animation.tick[eid] = 2 * x
+            // Velocity.x[eid] = 0.25
+            //Velocity.y[eid] = 0
+            Commands.goRight[eid] = 1
+
+        } else {
+            Position.x[eid] = 100 + 10 * x
+            Position.y[eid] = 10 * (x + 3)
+            Commands.goDown[eid] = 1
+            Commands.goLeft[eid] = 1
+
+        }
     }
 
 
@@ -86,15 +100,16 @@ const go666 = async () => {
         addComponent(world, Move, eid)
         addComponent(world, Commands, eid)
         addComponent(world, Velocity, eid)
+        addComponent(world, FootCollider, eid)
+
         Position.x[eid] = 160
         Position.y[eid] = 100
         Orientation.a[eid] = 0
-        Animation.index[eid] = 0
-        Animation.tick[eid] = 0
+        // Animation.index[eid] = 0
+        // Animation.tick[eid] = 0
         Velocity.x[eid] = 0
         Velocity.y[eid] = 0
 
-        addComponent(world, FootCollider, eid)
         FootCollider.minX[eid] = -6
         FootCollider.maxX[eid] = 6
         FootCollider.minY[eid] = 6

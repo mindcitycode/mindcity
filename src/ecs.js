@@ -49,7 +49,7 @@ export const movementControlSystem = world => {
     const ents = movementControlQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-   
+
         let noMoveCommand = false
         if (hasComponent(world, Orientation, eid)) {
             if (Commands.goLeft[eid]) {
@@ -69,7 +69,7 @@ export const movementControlSystem = world => {
             const dy = Commands.goUp[eid] ? -1 : Commands.goDown[eid] ? 1 : 0
             Velocity.x[eid] = 0.5 * dx
             Velocity.y[eid] = 0.5 * dy
-         }
+        }
         if (hasComponent(world, Animation, eid)) {
             const a = Orientation.a[eid]
             if (noMoveCommand) {
@@ -98,29 +98,30 @@ export const moveSystem = world => {
     const ents = moveQuery(world)
     for (let i = 0; i < ents.length; i++) {
         const eid = ents[i]
-        let blocked = false
 
+        const destx = Position.x[eid] + Velocity.x[eid]
+        const desty = Position.y[eid] + Velocity.y[eid]
         if (hasComponent(world, FootCollider, eid)) {
-            blocked = true
 
             for (let tryIdx = 0; tryIdx < 3; tryIdx++) {
-                const destx = ((tryIdx === 0) || (tryIdx === 1)) ? (Position.x[eid] + Velocity.x[eid]) : (Position.x[eid])
-                const desty = ((tryIdx === 0) || (tryIdx === 2)) ? (Position.y[eid] + Velocity.y[eid]) : (Position.y[eid])
+                const pdestx = ((tryIdx === 0) || (tryIdx === 1)) ? (destx) : (Position.x[eid])
+                const pdesty = ((tryIdx === 0) || (tryIdx === 2)) ? (desty) : (Position.y[eid])
                 const collides = world.staticTilemapCollider.collides({
                     //            const result = world.staticTilemapCollider.search({
-                    minX: destx + FootCollider.minX[eid],
-                    maxX: destx + FootCollider.maxX[eid],
-                    minY: desty + FootCollider.minY[eid],
-                    maxY: desty + FootCollider.maxY[eid]
+                    minX: pdestx + FootCollider.minX[eid],
+                    maxX: pdestx + FootCollider.maxX[eid],
+                    minY: pdesty + FootCollider.minY[eid],
+                    maxY: pdesty + FootCollider.maxY[eid]
                 })
-                if (collides) {
-                    blocked = true
-                } else {
-                    Position.x[eid] = destx
-                    Position.y[eid] = desty
+                if (!collides) {
+                    Position.x[eid] = pdestx
+                    Position.y[eid] = pdesty
                     break;
                 }
             }
+        } else {
+            Position.x[eid] = destx
+            Position.y[eid] = desty
         }
 
     }
