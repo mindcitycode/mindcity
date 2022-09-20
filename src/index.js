@@ -19,6 +19,10 @@ const imagesUrls = [
 ]
 import RBush from 'rbush'
 import { clamp } from './lib/clamp.js'
+
+import {Persisted} from './lib/persist.js' 
+const storedHeroPosition = Persisted('hero-position')
+
 /*
 const go667 = async () => {
     
@@ -110,8 +114,10 @@ const go666 = async () => {
         addComponent(world, FootCollider, eid)
         addComponent(world, CultFollower, eid)
 
-        Position.x[eid] = 160
-        Position.y[eid] = 100
+        const previousPos = storedHeroPosition.get() || ({ x: 160, y: 100 })
+
+        Position.x[eid] = previousPos.x
+        Position.y[eid] = previousPos.y
         Orientation.a[eid] = 0
         // Animation.index[eid] = 0
         // Animation.tick[eid] = 0
@@ -154,18 +160,18 @@ const go666 = async () => {
                 x: Math.floor(5 * heroScreenPosition.x / canvas.width),
                 y: Math.floor(5 * heroScreenPosition.y / canvas.height)
             }
-            if (fivepart.x === 0) {
+            if (fivepart.x <= 0) {
                 must.mapLeft = true
-            } else if (fivepart.x === 4) {
+            } else if (fivepart.x >= 4) {
                 must.mapRight = true
             } else if (fivepart.x === 3) {
                 must.mapLeft = false
             } else if (fivepart.x === 1) {
                 must.mapRight = false
             }
-            if (fivepart.y === 0) {
+            if (fivepart.y <= 0) {
                 must.mapUp = true
-            } else if (fivepart.y === 4) {
+            } else if (fivepart.y >= 4) {
                 must.mapDown = true
             } else if (fivepart.y === 3) {
                 must.mapUp = false
@@ -222,7 +228,14 @@ const go666 = async () => {
             x: world.tilemapOrigin.x,
             y: world.tilemapOrigin.y
         })
+
+
         pipeline(world)
+        storedHeroPosition.set({
+            x: Position.x[heroEid],
+            y: Position.y[heroEid]
+        })
+
         /*
                 const result = staticTilemapCollider.search({
                     minX: Position.x[heroEid] - 8,
