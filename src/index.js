@@ -15,7 +15,7 @@ const keyDown = registerKeyboard()
 
 import { extractTileDefinitions, fixImagesPath, getBounds, parseTilemap } from './lib/tilemap.js'
 const imagesUrls = [
-    "/assets/imgs/tilemap_packed.png"
+    "assets/imgs/tilemap_packed.png"
 ]
 import RBush from 'rbush'
 import { clamp } from './lib/clamp.js'
@@ -36,7 +36,7 @@ go667()
 const go666 = async () => {
     const renderer = await Renderer(canvas, imagesUrls)
 
-    const map0 = await fetch('/assets/data/map0.json').then(x => x.json())
+    const map0 = await fetch('assets/data/map0.json').then(x => x.json())
     fixImagesPath(map0, imagesUrls)
     const tilemap0 = parseTilemap(renderer, map0)
 
