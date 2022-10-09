@@ -45,7 +45,7 @@ export const extractTileDefinitions = tilemap => {
         // tile having properties
         tileset.tiles.forEach(({ id, properties }) => {
             const gid = id + tileset.firstgid
-            const property = properties.find(p => p.name === 'vertical-sort-tile-offset')
+            const property = properties?.find(p => p.name === 'vertical-sort-tile-offset')
             if (property) {
                 tiles[gid].vsort = parseInt(property.value) * tileset.tileheight
             }

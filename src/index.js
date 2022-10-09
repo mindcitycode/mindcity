@@ -81,7 +81,7 @@ const go666 = async () => {
         FootCollider.maxY[eid] = 8
         if (x < 5) {
             CultFollower.index[eid] = x % CULT_COUNT
-            Position.x[eid] = 10 * x
+            Position.x[eid] = 110 +10 * x
             Position.y[eid] = 60 + 10 * (x + 3)
             //  Orientation.a[eid] = 0
             //  Animation.index[eid] = 0
@@ -92,7 +92,7 @@ const go666 = async () => {
 
         } else {
             CultFollower.index[eid] = 0
-            Position.x[eid] = 100 + 10 * x
+            Position.x[eid] = 200 + 10 * x
             Position.y[eid] = 10 * (x + 3)
             Commands.goDown[eid] = 1
             Commands.goLeft[eid] = 1
